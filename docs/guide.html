@@ -112,7 +112,7 @@ footer{border-top:1px solid var(--line);padding-top:26px;margin-top:56px;font-si
  <div class="brand"><small>Guided walkthrough</small>Build a CTRM analytics layer on Microsoft Fabric</div>
  <div class="prog"><div class="progbar"><div class="progfill"></div></div>
   <div class="progtxt">0 of 8 steps done</div></div>
- <nav class="nav"><a href="#why">Why</a><a href="#what">What</a><a href="#get">Get the code</a><a href="#s1">1. Set up the workspace and read the trial banner</a><a href="#s2">2. Generate the CTRM dataset</a><a href="#s3">3. Load the Warehouse</a><a href="#s4">4. Build the five T-SQL engines</a><a href="#s5">5. Prove it twice, then prove the replay</a><a href="#s6">6. The Direct Lake model</a><a href="#s7">7. The report</a><a href="#s8">8. Publish</a><a href="#traps">Traps</a><a href="#not">Limits</a></nav>
+ <nav class="nav"><a href="#why">Why</a><a href="#what">What</a><a href="#code">Get the code</a><a href="#s1">1. Set up the workspace and read the trial banner</a><a href="#s2">2. Generate the CTRM dataset</a><a href="#s3">3. Load the Warehouse</a><a href="#s4">4. Build the five T-SQL engines</a><a href="#s5">5. Prove it twice, then prove the replay</a><a href="#s6">6. The Direct Lake model</a><a href="#s7">7. The report</a><a href="#s8">8. Publish</a><a href="#traps">Traps</a><a href="#not">Limits</a></nav>
  <label class="tog"><input type="checkbox" id="trapOnly"> Show only the gotchas</label>
 </aside>
 <main class="main">
@@ -144,10 +144,21 @@ with a residual bucket that makes the part nobody can explain <i>visible</i> ins
 <div class="note"><b>All data is synthetic</b>, generated from a fixed seed. The fictional client is Serantau Palm Trading Sdn. Bhd. - a Malaysian palm oil trader hedging physical contracts with Bursa Malaysia FCPO futures. No real trades, counterparties or prices appear anywhere.</div>
 </section>
 
-<section id="get"><h2>Get the code</h2>
-<p class="plain">Everything referenced below is in the repository:
-<a href="https://github.com/BIVenture2025/palmdesk-ctrm-fabric">github.com/BIVenture2025/palmdesk-ctrm-fabric</a> -
-<a href="https://github.com/BIVenture2025/palmdesk-ctrm-fabric/archive/refs/heads/main.zip">download it as a ZIP</a>.</p>
+<section id="code"><h2>Get the code</h2>
+<p class="sub">Everything the steps below tell you to run is in one public repository, MIT licensed,
+no sign-up. <b>Get it before step 2</b> — that is the first step that needs it.</p>
+<div class="win"><b><a href="https://github.com/BIVenture2025/palmdesk-ctrm-fabric">github.com/BIVenture2025/palmdesk-ctrm-fabric</a></b> &nbsp;&middot;&nbsp; <a href="https://github.com/BIVenture2025/palmdesk-ctrm-fabric/archive/refs/heads/main.zip"><b>Download the repository as a ZIP</b></a> &nbsp;&middot;&nbsp; or clone it:</div><div class="code"><pre>git clone https://github.com/BIVenture2025/palmdesk-ctrm-fabric.git
+cd palmdesk-ctrm-fabric
+python notebooks/generate.py     # writes out/data/*.csv and out/sql_batches/*.sql</pre></div>
+<table><thead><tr><th style="width:22%">Folder</th><th>What is in it</th></tr></thead><tbody>
+<tr><td><code>sql/</code></td><td>Warehouse DDL and the <b>five T-SQL engines</b>, numbered in run order. <code>REPLAY_ORDER.md</code> is the sequence; <code>source_batches/</code> loads the data</td></tr>
+<tr><td><code>notebooks/</code></td><td>The seeded CTRM generator — contracts, futures, hedge relationships, curves, 120 business days — and the market-feed notebook</td></tr>
+<tr><td><code>model/</code></td><td>The semantic model as <code>.tmdl</code>, plus the generators that produce it. <b><code>expressions.tmdl</code> is the one line worth reading first</b></td></tr>
+<tr><td><code>engines/</code></td><td><code>replay.py</code> and <code>reconcile.py</code> — the second, independent implementation used to check the first</td></tr>
+<tr><td><code>report/</code></td><td>The four-page PBIR report definition and its generators</td></tr>
+<tr><td><code>docs/</code></td><td>Every finding with the call that established it, the outcome contract, post-mortem, plan-versus-actual, cost — and this guide</td></tr>
+</tbody></table>
+<div class="note"><b>If you only open three things first:</b> <code>model/expressions.tmdl</code> is the connector line that cost most of two sessions, <code>sql/03_usp_run_eod.sql</code> is the mark-to-market and the six-bucket attribution, and <code>engines/reconcile.py</code> is what proves the whole thing adds up.</div>
 </section>
 
 <h2 id="build">The build</h2>
