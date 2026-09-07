@@ -1,0 +1,38 @@
+# scrub_check.py allowlist -- Project 27 (PalmDesk)
+#
+# DELIBERATELY SHORT. A finding that does not apply gets a NAMED CLASS that is counted and
+# printed (TEMPLATE), never an allowlist entry that makes it vanish. This file exists for the
+# one case that is neither: a contact address published on purpose.
+#
+# RUN 2026-09-07 against 07_Published_GitHub (publishable scope, NOT the project root):
+#   before redaction: 281 findings, 6 real BLOCK instances
+#     - 5 x fabric_sql_endpoint (docs/FINDINGS_S2.md, docs/OUTCOME_CONTRACT.md, model/build_tmdl.py,
+#       model/expressions.tmdl, platform/VL_PalmDesk.VariableLibrary/variables.json)
+#     - 1 x onelake_endpoint (docs/FINDINGS_S2.md)
+#   after redaction:  272 findings, 0 BLOCK instances, 260 WARN (guid), 12 TEMPLATE
+#
+# Every BLOCK was fixed BY REDACTION IN THE FILE, not by an allowlist entry -- an endpoint is
+# redacted unconditionally, per the tool's own standing rule. A note is left at the redaction site
+# in model/expressions.tmdl explaining what was removed and, more importantly, that the CONNECTOR
+# SHAPE is deliberately kept: that one line is the project's central finding (F-29) and redacting
+# it would destroy the thing worth publishing.
+#
+# Measured on publishable scope, per Skill 9 SS0. For the record, the same tool over the PROJECT
+# ROOT reports 573 real values and "DO NOT PUBLISH" -- and both verdicts are correct. Working
+# documents legitimately carry tenant GUIDs and SQL endpoints; the repository must not. A CLEAN
+# verdict with no scope named is not evidence of anything (FINDINGS_S3.md F-37 sharpened).
+#
+# GUID POLICY (Skill 9 SS0 census, decided once, applied to all 260 WARN-severity guid findings):
+# redact a GUID that names something outliving the trial; keep one that names an event inside it.
+# EVERY GUID in this repository is trial-scoped. The Fabric trial capacity
+# (Malaysia West) lapses around 2026-10-03: the workspace, the warehouse, the semantic model, the
+# report and the mirrored database all cease to exist with it. They are also the load-bearing
+# evidence -- the model and report item ids are what make claims like "all four pages render
+# against Warehouse truth" and "9 items reconciling to the contract" mechanically checkable rather
+# than assertions, and the probe ids in docs/FINDINGS_S2.md are the record of what was tested and
+# torn down. Redacting them would weaken every one of those citations for no security gain, since
+# they point at a tenant that will not exist. None are allowlisted below: they are WARN, not BLOCK,
+# and are reported for confirmation rather than suppressed, per the tool's severity design.
+
+# the sign-off in README.md, published intentionally
+waisonyeong@gmail.com

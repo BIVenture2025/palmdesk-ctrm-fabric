@@ -1,0 +1,229 @@
+table 'Attribution Daily'
+	lineageTag: 92f66ad0-408e-57f8-84d5-b4702f4c6a44
+	sourceLineageTag: attribution_daily
+
+	/// Change in book MTM over the days in context. The six buckets explain this figure.
+	measure 'Delta MTM (MYR)' = SUM ( 'Attribution Daily'[d_mtm] )
+		formatString: #,##0
+		lineageTag: 8d39612d-aaa2-5e1f-a90c-0556a4a1e6ab
+
+	/// Bucket 1. Positions with no row on the prior business day, valued at the confirmed price.
+	measure 'New Trades (MYR)' = SUM ( 'Attribution Daily'[b1] )
+		formatString: #,##0
+		lineageTag: 5c1c6968-da7f-55a5-9269-29b322f7dcc3
+
+	/// Bucket 2. Curve move on continuing positions, holding yesterday's tenor fixed, at yesterday's FX.
+	measure 'Price (MYR)' = SUM ( 'Attribution Daily'[b2] )
+		formatString: #,##0
+		lineageTag: 7ae28b4d-58b3-575e-aa97-e1b41d698878
+
+	/// Bucket 3. FX revaluation of continuing physical positions. Futures are MYR and carry none.
+	measure 'FX (MYR)' = SUM ( 'Attribution Daily'[b3] )
+		formatString: #,##0
+		lineageTag: fe6b47f9-eed2-5a88-a1b0-3bab258756d2
+
+	/// Bucket 4. One day of carry: yesterday's tenor to today's tenor on today's curve, at today's FX.
+	measure 'Time (MYR)' = SUM ( 'Attribution Daily'[b4] )
+		formatString: #,##0
+		lineageTag: 546fa55c-4526-5e68-b757-72d1a9a221b6
+
+	/// Bucket 5. Positions that left the book, plus the residual on positions whose version or quantity changed.
+	measure 'Amendments and Cancellations (MYR)' = SUM ( 'Attribution Daily'[b5] )
+		formatString: #,##0
+		lineageTag: 44d93832-a173-57cd-af51-b0a76d564e2d
+
+	/// Bucket 6. Residual on unchanged continuing positions. This is the control the desk watches.
+	measure 'Unexplained (MYR)' = SUM ( 'Attribution Daily'[b6] )
+		formatString: #,##0.00
+		lineageTag: 952c8be6-623c-5442-9862-8db2729d7409
+
+	/// b1 + b2 + b3 + b4 + b5 + b6 as computed in the Warehouse.
+	measure 'Sum of Buckets (MYR)' = SUM ( 'Attribution Daily'[sum_b] )
+		formatString: #,##0
+		lineageTag: 596de359-6b69-5f74-afad-4ca0aff1c1a4
+
+	/// Control: must be exactly zero. Frozen at 120 of 120 days on 2026-09-06 09:49:22 UTC.
+	measure 'Attribution Residual (MYR)' = [Sum of Buckets (MYR)] - [Delta MTM (MYR)]
+		formatString: #,##0.00
+		lineageTag: fb9d1921-c7b0-5f06-8343-5a1ad9e8d29c
+
+	/// Realised P&L recorded on the days in context.
+	measure 'Realised P&L (MYR)' = SUM ( 'Attribution Daily'[realised] )
+		formatString: #,##0
+		lineageTag: b866a6a2-efcf-5cd0-88e2-bfd5a03aff4e
+
+	/// Frozen tolerance from VL_PalmDesk (unexplained_tolerance_myr, frozen 2026-09-06 09:49 UTC): the worst non-engineered daily |unexplained| across the 120-day run.
+	measure 'Unexplained Tolerance (MYR)' = 0.28
+		formatString: #,##0.00
+		lineageTag: d0265602-0db9-5e60-8b6e-037bcaecf18b
+
+	/// Largest daily |unexplained| in context.
+	measure 'Max Absolute Unexplained (MYR)' = MAXX ( VALUES ( 'Attribution Daily'[biz_date] ), ABS ( CALCULATE ( SUM ( 'Attribution Daily'[b6] ) ) ) )
+		formatString: #,##0.00
+		lineageTag: 84fea32a-2cea-5fcc-8667-1177150ec46d
+
+	/// Days whose unexplained bucket exceeds the frozen tolerance. Three are expected, by construction.
+	measure 'Days Outside Tolerance' =
+			COUNTROWS (
+			    FILTER (
+			        VALUES ( 'Attribution Daily'[biz_date] ),
+			        ABS ( CALCULATE ( SUM ( 'Attribution Daily'[b6] ) ) ) > [Unexplained Tolerance (MYR)]
+			    )
+			)
+		formatString: 0
+		lineageTag: b45125e3-8452-55ce-a15d-0cc0b487455e
+
+	/// Days re-run under the curve restatement.
+	measure 'Restated Days' = CALCULATE ( COUNTROWS ( 'Attribution Daily' ), 'Attribution Daily'[restated] = TRUE () )
+		formatString: 0
+		lineageTag: 9bbb5fb9-2d79-5bd5-afcc-a4f7f4bdeb7c
+
+	measure 'Delta MTM alt text' = "Change in book MTM over the days in context: " & FORMAT ( [Delta MTM (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: d586251f-d14f-5af1-8752-f34b3bcfb9d1
+
+	measure 'Sum of Buckets alt text' = "The six attribution buckets sum to " & FORMAT ( [Sum of Buckets (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: e1b94ffd-6fb2-5eb2-89f4-426466743fb2
+
+	measure 'Attribution Residual alt text' = "Attribution residual, which must be zero: " & FORMAT ( [Attribution Residual (MYR)], "#,##0.00" ) & " MYR."
+		isHidden
+		lineageTag: eb7af28f-f58e-5b64-96fe-127178d267b4
+
+	measure 'Max Unexplained alt text' = "Largest single-day unexplained amount: " & FORMAT ( [Max Absolute Unexplained (MYR)], "#,##0.00" ) & " MYR."
+		isHidden
+		lineageTag: 6d973b71-7f1f-5336-b818-b91870d60a5d
+
+	measure 'Days Outside Tolerance alt text' = "Days above the frozen " & FORMAT ( [Unexplained Tolerance (MYR)], "#,##0.00" ) & " MYR tolerance: " & FORMAT ( [Days Outside Tolerance], "0" ) & "."
+		isHidden
+		lineageTag: 056dd5a3-c295-56c0-a619-9ef1d0f3d0b9
+
+	measure 'Realised P&L alt text' = "Realised P and L over the days in context: " & FORMAT ( [Realised P&L (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: 066ac193-c28b-57ae-a7b6-7a245061ed33
+
+	measure 'Unexplained trend alt text' = "Daily unexplained bucket. Largest " & FORMAT ( [Max Absolute Unexplained (MYR)], "#,##0.00" ) & " MYR, " & FORMAT ( [Days Outside Tolerance], "0" ) & " days outside tolerance."
+		isHidden
+		lineageTag: 7566d4dd-bd9c-5bda-9394-820daad19458
+
+	column biz_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 9d570f05-e479-56a6-9e9e-8d12b6490cc5
+		sourceLineageTag: biz_date
+		summarizeBy: none
+		sourceColumn: biz_date
+		annotation SummarizationSetBy = Automatic
+
+	column mtm_open
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 978950c3-9dbf-530a-873f-aa9a9fa845a1
+		sourceLineageTag: mtm_open
+		summarizeBy: sum
+		sourceColumn: mtm_open
+
+	column mtm_close
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 4c9543f8-5c47-54a4-82e7-96e8769b584c
+		sourceLineageTag: mtm_close
+		summarizeBy: sum
+		sourceColumn: mtm_close
+
+	column d_mtm
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 726ceac6-6e9a-5c88-a177-ab200de127dc
+		sourceLineageTag: d_mtm
+		summarizeBy: sum
+		sourceColumn: d_mtm
+
+	column b1
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: e9d26ccd-ac3c-5a82-ac50-2fbb73165c31
+		sourceLineageTag: b1
+		summarizeBy: sum
+		sourceColumn: b1
+
+	column b2
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 136497c0-235c-5526-b7b2-28d418548f76
+		sourceLineageTag: b2
+		summarizeBy: sum
+		sourceColumn: b2
+
+	column b3
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 3359f482-9bf8-5805-ad46-ea20ac93e477
+		sourceLineageTag: b3
+		summarizeBy: sum
+		sourceColumn: b3
+
+	column b4
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 72660c17-8249-5ea7-bba3-8b1dc98dba25
+		sourceLineageTag: b4
+		summarizeBy: sum
+		sourceColumn: b4
+
+	column b5
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 49767dac-14e4-5bf3-a5fb-dcbbdf07e0a2
+		sourceLineageTag: b5
+		summarizeBy: sum
+		sourceColumn: b5
+
+	column b6
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: d3a20702-9474-51df-a69b-fe35c00ff7fe
+		sourceLineageTag: b6
+		summarizeBy: sum
+		sourceColumn: b6
+
+	column sum_b
+		dataType: decimal
+		formatString: #,##0.00
+		isHidden
+		lineageTag: 82617a5d-e7fc-5286-b9fd-03912ac28521
+		sourceLineageTag: sum_b
+		summarizeBy: sum
+		sourceColumn: sum_b
+
+	column realised
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 88bd2e90-d851-5011-98eb-554c6b17ce03
+		sourceLineageTag: realised
+		summarizeBy: sum
+		sourceColumn: realised
+
+	column restated
+		dataType: boolean
+		lineageTag: 6ee12e05-ac9b-5cf8-98d7-b4e8d4370d97
+		sourceLineageTag: restated
+		summarizeBy: none
+		sourceColumn: restated
+
+	column run_ts
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn:ss
+		isHidden
+		lineageTag: 6119c03b-cd44-5cc6-8567-6051f322bf78
+		sourceLineageTag: run_ts
+		summarizeBy: none
+		sourceColumn: run_ts
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Attribution Daily' = entity
+		mode: directLake
+		source
+			entityName: attribution_daily
+			schemaName: eng
+			expressionSource: 'DirectLake - WH_PalmDesk'

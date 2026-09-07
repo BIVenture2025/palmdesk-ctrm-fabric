@@ -1,0 +1,111 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "MxProduct",
+  "position": {
+    "x": 772,
+    "y": 244,
+    "z": 0,
+    "height": 268,
+    "width": 474,
+    "tabOrder": 7100
+  },
+  "visual": {
+    "visualType": "matrix",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Product"
+                    }
+                  },
+                  "Property": "product_name"
+                }
+              },
+              "queryRef": "Product.product_name",
+              "nativeQueryRef": "product_name",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MTM Daily"
+                    }
+                  },
+                  "Property": "MTM (MYR)"
+                }
+              },
+              "queryRef": "MTM Daily.MTM (MYR)",
+              "nativeQueryRef": "MTM (MYR)",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MTM Daily"
+                    }
+                  },
+                  "Property": "Long Position (MT)"
+                }
+              },
+              "queryRef": "MTM Daily.Long Position (MT)",
+              "nativeQueryRef": "Long Position (MT)",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MTM Daily"
+                    }
+                  },
+                  "Property": "Short Position (MT)"
+                }
+              },
+              "queryRef": "MTM Daily.Short Position (MT)",
+              "nativeQueryRef": "Short Position (MT)",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "MTM Daily"
+                    }
+                  },
+                  "Property": "Product table alt text"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

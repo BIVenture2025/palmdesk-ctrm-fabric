@@ -1,0 +1,20 @@
+/// REDACTED FOR PUBLICATION: the first argument was this project's live Fabric SQL endpoint
+/// hostname, which identifies the tenant and the item. It is replaced with a placeholder, in the
+/// file rather than allowlisted -- an endpoint is redacted unconditionally (scrub_check.py's own
+/// standing rule). Substitute your warehouse's own SQL endpoint, from the Warehouse item's
+/// "SQL connection string" in the Fabric portal.
+///
+/// THE SHAPE IS THE POINT, AND IT IS KEPT INTACT. A Fabric WAREHOUSE binds through Direct Lake
+/// ON SQL -- Sql.Database(<sql endpoint>, <item id>) -- NOT Direct Lake on OneLake
+/// (AzureStorage.DataLake). The OneLake form is a LEGAL datasource kind: it validates on create,
+/// reads back intact, passes every schema validator, and draws all twelve tables with their
+/// relationships in the modelling canvas. It simply never binds a table -- every visual returns
+/// Missing_References. That one line cost most of two sessions. See docs/FINDINGS_S2.md F-29.
+expression 'DirectLake - WH_PalmDesk' =
+		let
+		    Source = Sql.Database("<SQL-ENDPOINT>.datawarehouse.fabric.microsoft.com", "43516adb-2f22-46e6-8fa4-3ad499483171")
+		in
+		    Source
+	lineageTag: 6b3636ef-fd9f-5c10-8f3e-1ecdf81e505b
+
+	annotation PBI_IncludeFutureArtifacts = False

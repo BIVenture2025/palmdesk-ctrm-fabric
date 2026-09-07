@@ -1,0 +1,140 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "MxCp",
+  "position": {
+    "x": 20,
+    "y": 244,
+    "z": 0,
+    "height": 268,
+    "width": 736,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "matrix",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Counterparty"
+                    }
+                  },
+                  "Property": "cp_name"
+                }
+              },
+              "queryRef": "Counterparty.cp_name",
+              "nativeQueryRef": "cp_name",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Exposure Daily"
+                    }
+                  },
+                  "Property": "Exposure (MYR)"
+                }
+              },
+              "queryRef": "Exposure Daily.Exposure (MYR)",
+              "nativeQueryRef": "Exposure (MYR)",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Exposure Daily"
+                    }
+                  },
+                  "Property": "Credit Limit (MYR)"
+                }
+              },
+              "queryRef": "Exposure Daily.Credit Limit (MYR)",
+              "nativeQueryRef": "Credit Limit (MYR)",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Exposure Daily"
+                    }
+                  },
+                  "Property": "Utilisation %"
+                }
+              },
+              "queryRef": "Exposure Daily.Utilisation %",
+              "nativeQueryRef": "Utilisation %",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Exposure Daily"
+                    }
+                  },
+                  "Property": "ECL (MYR)"
+                }
+              },
+              "queryRef": "Exposure Daily.ECL (MYR)",
+              "nativeQueryRef": "ECL (MYR)",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Exposure Daily"
+                  }
+                },
+                "Property": "Exposure (MYR)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Exposure Daily"
+                    }
+                  },
+                  "Property": "Counterparty table alt text"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

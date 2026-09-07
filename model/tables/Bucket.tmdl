@@ -1,0 +1,50 @@
+table 'Bucket'
+	lineageTag: a8c0bcc9-a619-5e61-88d6-c321d500c80e
+	sourceLineageTag: bucket
+
+	column bucket_no
+		dataType: int64
+		formatString: 0
+		lineageTag: d9217277-aa68-5694-85d3-8b4cce15680c
+		sourceLineageTag: bucket_no
+		summarizeBy: none
+		sourceColumn: bucket_no
+
+	column bucket_code
+		dataType: string
+		lineageTag: b7d428b1-18ae-517a-b23f-702bb3ab19b5
+		sourceLineageTag: bucket_code
+		summarizeBy: none
+		sourceColumn: bucket_code
+		sortByColumn: bucket_sort
+
+	column bucket_name
+		dataType: string
+		lineageTag: f142e8ab-a255-534c-adc8-b40a84b9288b
+		sourceLineageTag: bucket_name
+		summarizeBy: none
+		sourceColumn: bucket_name
+		sortByColumn: bucket_sort
+
+	column bucket_sort
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: b438524d-058a-5d69-9917-aa1b8f171151
+		sourceLineageTag: bucket_sort
+		summarizeBy: none
+		sourceColumn: bucket_sort
+
+	column bucket_note
+		dataType: string
+		lineageTag: 28a10bc1-844e-57fa-b8d7-9d7364ba6feb
+		sourceLineageTag: bucket_note
+		summarizeBy: none
+		sourceColumn: bucket_note
+
+	partition 'Bucket' = entity
+		mode: directLake
+		source
+			entityName: bucket
+			schemaName: ref
+			expressionSource: 'DirectLake - WH_PalmDesk'

@@ -1,0 +1,1 @@
+INSERT INTO ref.product (product_code, product_name, curve_ccy, unit) VALUES ('CPO','Crude palm oil (FCPO settlement curve)','MYR','MT'),('RBDPO','RBD palm olein (vendor assessed, FOB Malaysia)','USD','MT'),('PKO','Palm kernel oil (vendor assessed, FOB Malaysia)','USD','MT');

@@ -1,0 +1,66 @@
+table 'Attribution Bucket Calculation Group'
+	lineageTag: c2cd2eff-7c75-5dee-b2cc-6bdd59885e23
+
+	calculationGroup
+		precedence: 10
+
+		calculationItem 'New trades' =
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Bucket' ),
+				    'Bucket'[bucket_no] = 1
+				)
+
+		calculationItem Price =
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Bucket' ),
+				    'Bucket'[bucket_no] = 2
+				)
+
+		calculationItem FX =
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Bucket' ),
+				    'Bucket'[bucket_no] = 3
+				)
+
+		calculationItem Time =
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Bucket' ),
+				    'Bucket'[bucket_no] = 4
+				)
+
+		calculationItem 'Amendments and cancellations' =
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Bucket' ),
+				    'Bucket'[bucket_no] = 5
+				)
+
+		calculationItem Unexplained =
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Bucket' ),
+				    'Bucket'[bucket_no] = 6
+				)
+
+	column 'Attribution Bucket'
+		dataType: string
+		lineageTag: f0ecd521-33f6-5f4b-ac3d-3ccdecd9db53
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 11547137-704f-5437-9724-4c751e0c2a5c
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic

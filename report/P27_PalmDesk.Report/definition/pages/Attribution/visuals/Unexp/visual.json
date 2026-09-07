@@ -1,0 +1,81 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "Unexp",
+  "position": {
+    "x": 772,
+    "y": 244,
+    "z": 0,
+    "height": 268,
+    "width": 474,
+    "tabOrder": 7100
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Calendar"
+                    }
+                  },
+                  "Property": "biz_date"
+                }
+              },
+              "queryRef": "Calendar.biz_date",
+              "nativeQueryRef": "biz_date",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Attribution Daily"
+                    }
+                  },
+                  "Property": "Unexplained (MYR)"
+                }
+              },
+              "queryRef": "Attribution Daily.Unexplained (MYR)",
+              "nativeQueryRef": "Unexplained (MYR)",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Attribution Daily"
+                    }
+                  },
+                  "Property": "Unexplained trend alt text"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

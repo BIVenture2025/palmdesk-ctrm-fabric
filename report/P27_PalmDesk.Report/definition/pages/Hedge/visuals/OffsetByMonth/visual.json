@@ -1,0 +1,81 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "OffsetByMonth",
+  "position": {
+    "x": 772,
+    "y": 244,
+    "z": 0,
+    "height": 268,
+    "width": 474,
+    "tabOrder": 7100
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hedge Test Monthly"
+                    }
+                  },
+                  "Property": "month_key"
+                }
+              },
+              "queryRef": "Hedge Test Monthly.month_key",
+              "nativeQueryRef": "month_key",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hedge Test Monthly"
+                    }
+                  },
+                  "Property": "Dollar Offset"
+                }
+              },
+              "queryRef": "Hedge Test Monthly.Dollar Offset",
+              "nativeQueryRef": "Dollar Offset",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hedge Test Monthly"
+                    }
+                  },
+                  "Property": "Offset chart alt text"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

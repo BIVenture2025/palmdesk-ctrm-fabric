@@ -1,0 +1,52 @@
+relationship e0ecc745-3e98-5957-9a1e-950448eb5a51
+	fromColumn: 'MTM Daily'.biz_date
+	toColumn: 'Calendar'.biz_date
+
+relationship d0bb9162-2c26-5ca7-89f8-452f5caa37d6
+	fromColumn: 'Attribution Daily'.biz_date
+	toColumn: 'Calendar'.biz_date
+
+relationship bb215b00-4848-53b2-9ffa-19b067a62201
+	fromColumn: 'Exposure Daily'.biz_date
+	toColumn: 'Calendar'.biz_date
+
+relationship 1281e32f-a0fa-5baa-82cd-20e7177f1114
+	fromColumn: 'Exposure Daily'.cp_id
+	toColumn: 'Counterparty'.cp_id
+
+relationship b9842dbb-3acb-5a74-ba21-3541113c5e04
+	fromColumn: 'MTM Daily'.cp_id
+	toColumn: 'Counterparty'.cp_id
+
+relationship 5c68f970-1699-50b4-a20b-c91b535b2648
+	fromColumn: 'MTM Daily'.product_code
+	toColumn: 'Product'.product_code
+
+relationship 3b7bbee6-1cf0-5cc0-af6b-c1d5f35dda57
+	fromColumn: 'Physical Contract'.cp_id
+	toColumn: 'Counterparty'.cp_id
+
+relationship 1806f7d3-4eef-5ebf-a126-552f27b977a4
+	fromColumn: 'Physical Contract'.product_code
+	toColumn: 'Product'.product_code
+
+relationship ed749e67-b938-5610-a786-d2b667230214
+	fromColumn: 'Hedge Test Monthly'.hedge_rel_id
+	toColumn: 'Hedge Relationship'.hedge_rel_id
+
+relationship 1b835b33-ae19-59d0-809a-ebb9046d7673
+	fromColumn: 'Hedge Relationship'.product_code
+	toColumn: 'Product'.product_code
+	isActive: false
+
+relationship 3149bb1b-0999-5145-b312-265cec4cba91
+	fromColumn: 'Attribution Bucket Daily'.biz_date
+	toColumn: 'Calendar'.biz_date
+
+relationship 122c5837-1a00-57fe-b826-d09c0fce4db4
+	fromColumn: 'Attribution Bucket Daily'.bucket_no
+	toColumn: 'Bucket'.bucket_no
+
+relationship 0ff3a7aa-a1c8-5c2d-86ca-1857042ec4e9
+	fromColumn: 'FX Rate'.rate_date
+	toColumn: 'Calendar'.biz_date

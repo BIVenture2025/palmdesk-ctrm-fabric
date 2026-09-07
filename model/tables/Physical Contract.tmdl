@@ -1,0 +1,112 @@
+table 'Physical Contract'
+	lineageTag: 4d73a595-4f7b-5689-9ca8-ab7a63e5fc90
+	sourceLineageTag: physical_contract
+
+	/// Physical contracts in context.
+	measure 'Contracts' = COUNTROWS ( 'Physical Contract' )
+		formatString: 0
+		lineageTag: c1cf3d26-42d2-5806-ae6c-625bb2aa0a29
+
+	/// Confirmed tonnage across the physical contracts in context.
+	measure 'Contract Notional (MT)' = SUM ( 'Physical Contract'[confirmed_qty_mt] )
+		formatString: #,##0.0
+		lineageTag: e50d7849-8fef-5b8d-9814-9607b2ccea99
+
+	column contract_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3b8a046d-caad-5c0a-a9ec-6b2ac3eb1e4f
+		sourceLineageTag: contract_id
+		summarizeBy: none
+		sourceColumn: contract_id
+
+	column contract_ref
+		dataType: string
+		lineageTag: 63645893-645f-5b8f-8ff8-17af8c4094dd
+		sourceLineageTag: contract_ref
+		summarizeBy: none
+		sourceColumn: contract_ref
+
+	column cp_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 881b792e-85b6-540b-87b9-484c32533879
+		sourceLineageTag: cp_id
+		summarizeBy: none
+		sourceColumn: cp_id
+
+	column product_code
+		dataType: string
+		lineageTag: 5474c560-ef19-5408-aa98-c3a7de1c589e
+		sourceLineageTag: product_code
+		summarizeBy: none
+		sourceColumn: product_code
+
+	column side
+		dataType: string
+		lineageTag: f7cfd78d-51ca-5cf4-9f4e-913c2bf5bcc5
+		sourceLineageTag: side
+		summarizeBy: none
+		sourceColumn: side
+
+	column trade_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: dc3c319c-4e5b-5894-93fd-6bfe997c5db5
+		sourceLineageTag: trade_date
+		summarizeBy: none
+		sourceColumn: trade_date
+		annotation SummarizationSetBy = Automatic
+
+	column delivery_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: f2771eda-4f5b-5163-a36a-c458436cdfbf
+		sourceLineageTag: delivery_date
+		summarizeBy: none
+		sourceColumn: delivery_date
+		annotation SummarizationSetBy = Automatic
+
+	column price_ccy
+		dataType: string
+		lineageTag: aef495e5-308a-526b-b83a-fe09c7fb7ec0
+		sourceLineageTag: price_ccy
+		summarizeBy: none
+		sourceColumn: price_ccy
+
+	column terms
+		dataType: string
+		lineageTag: 815a4184-f56e-5ec7-9e73-cbefcd347ce4
+		sourceLineageTag: terms
+		summarizeBy: none
+		sourceColumn: terms
+
+	column is_mspo
+		dataType: boolean
+		lineageTag: 87bac950-6891-5c8c-8329-8fd0ebcc71ad
+		sourceLineageTag: is_mspo
+		summarizeBy: none
+		sourceColumn: is_mspo
+
+	column confirmed_price
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 68d8885c-0680-569f-a7da-0c6f26dd6340
+		sourceLineageTag: confirmed_price
+		summarizeBy: sum
+		sourceColumn: confirmed_price
+
+	column confirmed_qty_mt
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: 38492f5c-164c-550f-8de0-5f1ef185bb02
+		sourceLineageTag: confirmed_qty_mt
+		summarizeBy: sum
+		sourceColumn: confirmed_qty_mt
+
+	partition 'Physical Contract' = entity
+		mode: directLake
+		source
+			entityName: physical_contract
+			schemaName: trd
+			expressionSource: 'DirectLake - WH_PalmDesk'

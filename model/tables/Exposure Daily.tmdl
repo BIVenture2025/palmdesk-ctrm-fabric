@@ -1,0 +1,201 @@
+table 'Exposure Daily'
+	lineageTag: b725b23a-a67c-5c8d-aabe-e64e4fd17218
+	sourceLineageTag: exposure_daily
+
+	/// Credit exposure net of collateral at the latest business day in context.
+	measure 'Exposure (MYR)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUM ( 'Exposure Daily'[exposure] ), 'Calendar'[day_index] = d )
+		formatString: #,##0
+		lineageTag: 4b7d4d4f-708e-5f5f-95c1-d70b166241dc
+
+	/// Approved credit limit. Buyers carry cargo-scale limits, suppliers replacement-cost limits.
+	measure 'Credit Limit (MYR)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUM ( 'Exposure Daily'[limit_myr] ), 'Calendar'[day_index] = d )
+		formatString: #,##0
+		lineageTag: ff16fdd1-0cfc-5c93-8300-af30e55ed697
+
+	/// Exposure divided by limit at the latest business day in context.
+	measure 'Utilisation %' = DIVIDE ( [Exposure (MYR)], [Credit Limit (MYR)] )
+		formatString: 0.0%
+		lineageTag: 46ea1062-850b-5c59-a98f-b08f9810294a
+
+	/// Open accounts receivable.
+	measure 'AR Outstanding (MYR)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUM ( 'Exposure Daily'[ar_open] ), 'Calendar'[day_index] = d )
+		formatString: #,##0
+		lineageTag: 9c36cba3-44a7-5182-8a59-d2407761474a
+
+	/// Expected credit loss.
+	measure 'ECL (MYR)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUM ( 'Exposure Daily'[ecl] ), 'Calendar'[day_index] = d )
+		formatString: #,##0
+		lineageTag: 5d21121d-196a-5884-8cb5-b951405f2926
+
+	/// Counterparties over their limit at the latest business day in context.
+	measure 'Counterparties in Breach' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( DISTINCTCOUNT ( 'Exposure Daily'[cp_id] ), 'Calendar'[day_index] = d, 'Exposure Daily'[band] = "BREACH" )
+		formatString: 0
+		lineageTag: 771bd892-9862-5c09-83c1-af3aacb1d19b
+
+	/// Counterparties at or above 90% utilisation, the amber trigger.
+	measure 'Counterparties at 90% or Above' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( DISTINCTCOUNT ( 'Exposure Daily'[cp_id] ), 'Calendar'[day_index] = d, 'Exposure Daily'[utilisation] >= 0.9 )
+		formatString: 0
+		lineageTag: 5fa3bac7-6767-580f-8143-34b5e2198e5f
+
+	/// Highest utilisation reached over the days in context.
+	measure 'Peak Utilisation' = MAX ( 'Exposure Daily'[utilisation] )
+		formatString: 0.0%
+		lineageTag: c79b1ab0-937f-5111-ad47-c4b4bcdd9e31
+
+	/// Counterparty-days spent in breach.
+	measure 'Breach Days' = CALCULATE ( COUNTROWS ( 'Exposure Daily' ), 'Exposure Daily'[band] = "BREACH" )
+		formatString: 0
+		lineageTag: 7de15583-3946-56dc-9bc0-ad4176d66248
+
+	measure 'Exposure alt text' = "Credit exposure net of collateral: " & FORMAT ( [Exposure (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: 5baf3f90-f12e-5e76-86de-4e5633e9bc7b
+
+	measure 'Credit Limit alt text' = "Approved credit limit: " & FORMAT ( [Credit Limit (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: 3b0b60f8-b975-5535-9e5b-ef46e4031387
+
+	measure 'Utilisation alt text' = "Exposure as a share of limit: " & FORMAT ( [Utilisation %], "0.0%" ) & "."
+		isHidden
+		lineageTag: 1092e7a1-2904-5f75-95eb-fab0e84e475e
+
+	measure 'Breach count alt text' = "Counterparties over their limit: " & FORMAT ( [Counterparties in Breach], "0" ) & "."
+		isHidden
+		lineageTag: 73b05b35-c8af-5573-a380-0f07dd843df2
+
+	measure 'Amber count alt text' = "Counterparties at or above 90 percent utilisation: " & FORMAT ( [Counterparties at 90% or Above], "0" ) & "."
+		isHidden
+		lineageTag: 27d12490-7107-5d3e-aa96-b2c2d694cef2
+
+	measure 'ECL alt text' = "Expected credit loss: " & FORMAT ( [ECL (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: c62f8cc8-f075-595b-97f0-b69f24fb372d
+
+	measure 'Counterparty table alt text' = "Exposure, limit, utilisation and ECL by counterparty. Total " & FORMAT ( [Exposure (MYR)], "#,##0" ) & " MYR across " & FORMAT ( [Counterparties], "0" ) & " counterparties."
+		isHidden
+		lineageTag: 933af6c9-01cf-5fd6-b518-68c2b7ce8518
+
+	measure 'Country chart alt text' = "Credit exposure by counterparty country, totalling " & FORMAT ( [Exposure (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: 88fa75c6-f340-5222-8a13-81a64d66e167
+
+	column biz_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 662aaad3-d76b-580d-9183-a114968a2b30
+		sourceLineageTag: biz_date
+		summarizeBy: none
+		sourceColumn: biz_date
+		annotation SummarizationSetBy = Automatic
+
+	column cp_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e32ac56-aacc-50b7-a394-69b7f349349d
+		sourceLineageTag: cp_id
+		summarizeBy: none
+		sourceColumn: cp_id
+
+	column mtm_net
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: ab1f78dd-76fa-5d92-8229-9ded938d950e
+		sourceLineageTag: mtm_net
+		summarizeBy: sum
+		sourceColumn: mtm_net
+
+	column ar_open
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 4842a8d0-9821-5328-9b38-38ed1839083c
+		sourceLineageTag: ar_open
+		summarizeBy: sum
+		sourceColumn: ar_open
+
+	column unbilled
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 4f8faa77-2ea0-5bce-8891-7af954577ed7
+		sourceLineageTag: unbilled
+		summarizeBy: sum
+		sourceColumn: unbilled
+
+	column delivery_risk
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: d476b61a-a0a2-5090-a5ef-8972b1fb0b98
+		sourceLineageTag: delivery_risk
+		summarizeBy: sum
+		sourceColumn: delivery_risk
+
+	column collateral
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: fbb613e2-95c1-5007-b2fe-6e553301b51e
+		sourceLineageTag: collateral
+		summarizeBy: sum
+		sourceColumn: collateral
+
+	column exposure
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 0afc3a5e-f567-59d0-9efc-7dddc3d2b545
+		sourceLineageTag: exposure
+		summarizeBy: sum
+		sourceColumn: exposure
+
+	column limit_myr
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: b290ff7e-b5f2-548b-8d58-0f413022633d
+		sourceLineageTag: limit_myr
+		summarizeBy: sum
+		sourceColumn: limit_myr
+
+	column utilisation
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: d9999427-02df-5fb2-8188-48cad3deeebd
+		sourceLineageTag: utilisation
+		summarizeBy: sum
+		sourceColumn: utilisation
+
+	column band
+		dataType: string
+		lineageTag: 6a8b0dbb-ccbf-561f-af83-0264120bcf6e
+		sourceLineageTag: band
+		summarizeBy: none
+		sourceColumn: band
+
+	column ecl
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: a03de65f-1eae-577b-81e0-ec9ae198da7f
+		sourceLineageTag: ecl
+		summarizeBy: sum
+		sourceColumn: ecl
+
+	partition 'Exposure Daily' = entity
+		mode: directLake
+		source
+			entityName: exposure_daily
+			schemaName: eng
+			expressionSource: 'DirectLake - WH_PalmDesk'

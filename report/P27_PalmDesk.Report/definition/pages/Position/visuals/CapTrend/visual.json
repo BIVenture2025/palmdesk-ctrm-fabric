@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "CapTrend",
+  "position": {
+    "x": 20,
+    "y": 516,
+    "z": 0,
+    "height": 48,
+    "width": 736,
+    "tabOrder": 100
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Daily book MTM by product, valued on the settlement curve published on or before each business day. The 120 business days run 2026-03-16 to 2026-08-28; there is no public-holiday table, so the calendar is Mon-Fri only. Days 45-47 carry restated = 1 after the CPO 2026-05-15 curve was republished on 05-20.",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "color": "#5A6B72"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Left"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

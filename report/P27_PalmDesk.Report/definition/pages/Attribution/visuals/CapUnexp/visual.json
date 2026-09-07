@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "CapUnexp",
+  "position": {
+    "x": 772,
+    "y": 516,
+    "z": 0,
+    "height": 48,
+    "width": 474,
+    "tabOrder": 100
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Unexplained by day. Every day sits inside +/-0.28 MYR except 2026-04-15, 2026-06-08 and 2026-07-28 - contracts PC00102, PC00270 and PC00430, booked away from their confirmed price. The tolerance is frozen in VL_PalmDesk, not fitted to these three days.",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "color": "#5A6B72"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Left"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

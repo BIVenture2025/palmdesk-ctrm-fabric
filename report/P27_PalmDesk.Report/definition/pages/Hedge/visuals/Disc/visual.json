@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "Disc",
+  "position": {
+    "x": 20,
+    "y": 676,
+    "z": 11000,
+    "height": 40,
+    "width": 1226,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Synthetic data. Serantau Palm Trading Sdn. Bhd., its 40 counterparties, all contracts, curves and FX are fictitious and generated from a fixed seed (20260906) for demonstration. No real price series is used. FCPO contract specifications are VERIFIED against the Bursa Malaysia Derivatives product page; the futures expiry rule used here is a generator convention, not the Bursa rule.",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "fontStyle": "italic"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Left"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

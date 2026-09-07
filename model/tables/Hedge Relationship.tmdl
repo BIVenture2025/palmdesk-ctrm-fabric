@@ -1,0 +1,79 @@
+table 'Hedge Relationship'
+	lineageTag: b57c2033-459a-5233-a92a-3d0b178763e4
+	sourceLineageTag: hedge_relationship
+
+	column hedge_rel_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 981dfe7d-29ed-5048-9da8-9d6f424857b4
+		sourceLineageTag: hedge_rel_id
+		summarizeBy: none
+		sourceColumn: hedge_rel_id
+
+	column designation_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 175c3ab8-a4a1-539a-b4ea-48ab783384f3
+		sourceLineageTag: designation_date
+		summarizeBy: none
+		sourceColumn: designation_date
+		annotation SummarizationSetBy = Automatic
+
+	column product_code
+		dataType: string
+		lineageTag: e367799c-194a-54c0-81d4-0181fecfb545
+		sourceLineageTag: product_code
+		summarizeBy: none
+		sourceColumn: product_code
+
+	column forecast_month
+		dataType: string
+		lineageTag: f685c7a3-62fa-5b91-a32f-9f4e909df730
+		sourceLineageTag: forecast_month
+		summarizeBy: none
+		sourceColumn: forecast_month
+
+	column forecast_qty_mt
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: e924905d-e558-5c3b-9f50-eb73f127d7cb
+		sourceLineageTag: forecast_qty_mt
+		summarizeBy: sum
+		sourceColumn: forecast_qty_mt
+
+	column designated_lots
+		dataType: int64
+		formatString: 0
+		lineageTag: e8af7b0f-f39c-52c7-98b5-ca604aa70091
+		sourceLineageTag: designated_lots
+		summarizeBy: none
+		sourceColumn: designated_lots
+
+	column hedge_ratio
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: 5b35763e-9ee4-54f0-8d84-9f943d389e99
+		sourceLineageTag: hedge_ratio
+		summarizeBy: sum
+		sourceColumn: hedge_ratio
+
+	column documented
+		dataType: boolean
+		lineageTag: 0ac9e519-699d-5199-a313-70c6362e3a62
+		sourceLineageTag: documented
+		summarizeBy: none
+		sourceColumn: documented
+
+	column hedge_type
+		dataType: string
+		lineageTag: 48b242e2-87ea-5459-9422-42155d0e9231
+		sourceLineageTag: hedge_type
+		summarizeBy: none
+		sourceColumn: hedge_type
+
+	partition 'Hedge Relationship' = entity
+		mode: directLake
+		source
+			entityName: hedge_relationship
+			schemaName: trd
+			expressionSource: 'DirectLake - WH_PalmDesk'

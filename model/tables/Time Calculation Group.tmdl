@@ -1,0 +1,103 @@
+table 'Time Calculation Group'
+	lineageTag: 59e6018a-797d-555b-be3f-efcb23e63939
+
+	calculationGroup
+		precedence: 20
+
+		calculationItem Actual = SELECTEDMEASURE ()
+
+		calculationItem 'Prior Day' =
+				VAR d = MAX ( 'Calendar'[day_index] )
+				RETURN
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Calendar' ),
+				    'Calendar'[day_index] = d - 1
+				)
+
+		calculationItem 'Current Day' =
+				VAR d = MAX ( 'Calendar'[day_index] )
+				RETURN
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Calendar' ),
+				    'Calendar'[day_index] = d
+				)
+
+		calculationItem 'Day over Day' =
+				VAR d = MAX ( 'Calendar'[day_index] )
+				VAR _now =
+				    CALCULATE (
+				        SELECTEDMEASURE (),
+				        REMOVEFILTERS ( 'Calendar' ),
+				        'Calendar'[day_index] = d
+				    )
+				VAR _prior =
+				    CALCULATE (
+				        SELECTEDMEASURE (),
+				        REMOVEFILTERS ( 'Calendar' ),
+				        'Calendar'[day_index] = d - 1
+				    )
+				RETURN
+				IF ( NOT ISBLANK ( _prior ), _now - _prior )
+
+		calculationItem 'Month to Date' =
+				VAR d = MAX ( 'Calendar'[day_index] )
+				VAR mk =
+				    CALCULATE (
+				        SELECTEDVALUE ( 'Calendar'[month_key] ),
+				        REMOVEFILTERS ( 'Calendar' ),
+				        'Calendar'[day_index] = d
+				    )
+				RETURN
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Calendar' ),
+				    FILTER (
+				        ALL ( 'Calendar' ),
+				        'Calendar'[month_key] = mk && 'Calendar'[day_index] <= d
+				    )
+				)
+
+		calculationItem 'Rolling 5 Business Days' =
+				VAR d = MAX ( 'Calendar'[day_index] )
+				RETURN
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Calendar' ),
+				    FILTER (
+				        ALL ( 'Calendar' ),
+				        'Calendar'[day_index] > d - 5 && 'Calendar'[day_index] <= d
+				    )
+				)
+
+		calculationItem 'Rolling 20 Business Days' =
+				VAR d = MAX ( 'Calendar'[day_index] )
+				RETURN
+				CALCULATE (
+				    SELECTEDMEASURE (),
+				    REMOVEFILTERS ( 'Calendar' ),
+				    FILTER (
+				        ALL ( 'Calendar' ),
+				        'Calendar'[day_index] > d - 20 && 'Calendar'[day_index] <= d
+				    )
+				)
+
+	column 'Time Intelligence'
+		dataType: string
+		lineageTag: 42f1a29f-9b2d-59fb-9714-9966fbe35b8c
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 2cfa9115-9596-5892-a327-dd101492f92d
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic

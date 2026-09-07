@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "CapHedge",
+  "position": {
+    "x": 20,
+    "y": 516,
+    "z": 0,
+    "height": 48,
+    "width": 736,
+    "tabOrder": 100
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Cash flow hedges of forecast RBDPO sales with FCPO lots. A month whose cumulative hedged-item change is under 1% of notional is not assessed: the dollar-offset ratio is numerically meaningless near zero and was producing failures at +/-0.05% of notional. That de minimis floor is the single methodology amendment on this project and is disclosed, not silent.",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "color": "#5A6B72"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Left"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

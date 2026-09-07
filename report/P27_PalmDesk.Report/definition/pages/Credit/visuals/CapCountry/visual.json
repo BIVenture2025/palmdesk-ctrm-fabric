@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "CapCountry",
+  "position": {
+    "x": 772,
+    "y": 516,
+    "z": 0,
+    "height": 48,
+    "width": 474,
+    "tabOrder": 100
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Exposure by counterparty country. Buyers carry cargo-scale limits and suppliers replacement-cost limits; the rule is applied uniformly, including to the two engineered names.",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "color": "#5A6B72"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Left"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

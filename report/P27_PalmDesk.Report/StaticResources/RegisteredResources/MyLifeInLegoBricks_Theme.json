@@ -1,0 +1,390 @@
+{
+  "name": "MyLifeInLegoBricks_Theme.json",
+  "dataColors": [
+    "#165E83",
+    "#33A6B8",
+    "#1B3A5C",
+    "#84B9CB",
+    "#B23A34",
+    "#A98F3C"
+  ],
+  "foreground": "#27221F",
+  "foregroundNeutralSecondary": "#635E57",
+  "foregroundNeutralTertiary": "#6E6961",
+  "background": "#F2EFE6",
+  "backgroundLight": "#FFFFFB",
+  "backgroundNeutral": "#EAE5DC",
+  "tableAccent": "#165E83",
+  "good": "#33A6B8",
+  "neutral": "#84B9CB",
+  "bad": "#B23A34",
+  "maximum": "#1B3A5C",
+  "center": "#165E83",
+  "minimum": "#D9EDF1",
+  "null": "#6E6961",
+  "hyperlink": "#165E83",
+  "textClasses": {
+    "title": {
+      "fontFace": "Yu Gothic",
+      "fontSize": 28,
+      "color": "#27221F"
+    },
+    "header": {
+      "fontFace": "Yu Gothic",
+      "fontSize": 12,
+      "color": "#27221F"
+    },
+    "callout": {
+      "fontFace": "Yu Gothic Light",
+      "fontSize": 20,
+      "color": "#1B3A5C"
+    },
+    "label": {
+      "fontFace": "Yu Gothic Light",
+      "fontSize": 11,
+      "color": "#635E57"
+    }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFB"
+              }
+            },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#E1DACB"
+              }
+            },
+            "radius": 2
+          }
+        ],
+        "dropShadow": [
+          {
+            "show": false,
+            "color": {
+              "solid": {
+                "color": "#27221F"
+              }
+            },
+            "position": "Outer",
+            "preset": "Custom",
+            "shadowSpread": 0,
+            "shadowBlur": 0,
+            "transparency": 100
+          }
+        ],
+        "title": [
+          {
+            "show": true,
+            "fontColor": {
+              "solid": {
+                "color": "#635E57"
+              }
+            },
+            "background": {
+              "solid": {
+                "color": "#FFFFFB"
+              }
+            },
+            "fontSize": 11,
+            "fontFamily": "Yu Gothic",
+            "alignment": "left"
+          }
+        ],
+        "visualHeader": [
+          {
+            "show": true,
+            "background": {
+              "solid": {
+                "color": "#FFFFFB"
+              }
+            },
+            "foreground": {
+              "solid": {
+                "color": "#6E6961"
+              }
+            },
+            "border": {
+              "solid": {
+                "color": "#FFFFFB"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [
+          {
+            "color": {
+              "solid": {
+                "color": "#F2EFE6"
+              }
+            },
+            "transparency": 0
+          }
+        ]
+      }
+    },
+    "card": {
+      "*": {
+        "labels": [
+          {
+            "color": {
+              "solid": {
+                "color": "#27221F"
+              }
+            },
+            "fontSize": 20,
+            "fontFamily": "Yu Gothic"
+          }
+        ],
+        "categoryLabels": [
+          {
+            "color": {
+              "solid": {
+                "color": "#635E57"
+              }
+            },
+            "fontSize": 8,
+            "fontFamily": "Yu Gothic Light"
+          }
+        ]
+      }
+    },
+    "lineChart": {
+      "*": {
+        "lineStyles": [
+          {
+            "strokeWidth": 3,
+            "showMarker": false
+          }
+        ],
+        "valueAxis": [
+          {
+            "gridlineColor": {
+              "solid": {
+                "color": "#E1DACB"
+              }
+            },
+            "gridlineThickness": 1,
+            "fontSize": 8
+          }
+        ],
+        "categoryAxis": [
+          {
+            "gridlineShow": false,
+            "fontSize": 8
+          }
+        ]
+      }
+    },
+    "columnChart": {
+      "*": {
+        "valueAxis": [
+          {
+            "gridlineColor": {
+              "solid": {
+                "color": "#E1DACB"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "barChart": {
+      "*": {
+        "valueAxis": [
+          {
+            "gridlineColor": {
+              "solid": {
+                "color": "#E1DACB"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "waterfallChart": {
+      "*": {
+        "sentimentColors": [
+          {
+            "increaseFill": {
+              "solid": {
+                "color": "#33A6B8"
+              }
+            },
+            "decreaseFill": {
+              "solid": {
+                "color": "#B23A34"
+              }
+            },
+            "totalFill": {
+              "solid": {
+                "color": "#1B3A5C"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "pivotTable": {
+      "*": {
+        "columnHeaders": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#635E57"
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFB"
+              }
+            },
+            "fontFamily": "Yu Gothic",
+            "fontSize": 8
+          }
+        ],
+        "rowHeaders": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#27221F"
+              }
+            },
+            "fontSize": 9
+          }
+        ],
+        "values": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#27221F"
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFB"
+              }
+            },
+            "fontSize": 9
+          }
+        ],
+        "grid": [
+          {
+            "gridVertical": false,
+            "gridHorizontalColor": {
+              "solid": {
+                "color": "#E1DACB"
+              }
+            },
+            "rowPadding": 6
+          }
+        ]
+      }
+    },
+    "tableEx": {
+      "*": {
+        "columnHeaders": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#635E57"
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": "#FFFFFB"
+              }
+            },
+            "fontFamily": "Yu Gothic",
+            "fontSize": 8
+          }
+        ],
+        "values": [
+          {
+            "fontColor": {
+              "solid": {
+                "color": "#27221F"
+              }
+            },
+            "fontSize": 9
+          }
+        ],
+        "grid": [
+          {
+            "gridVertical": false,
+            "gridHorizontalColor": {
+              "solid": {
+                "color": "#E1DACB"
+              }
+            },
+            "rowPadding": 6
+          }
+        ]
+      }
+    },
+    "slicer": {
+      "*": {
+        "background": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#FFFFFB"
+              }
+            }
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "color": {
+              "solid": {
+                "color": "#E1DACB"
+              }
+            },
+            "radius": 2
+          }
+        ]
+      }
+    },
+    "image": {
+      "*": {
+        "imageScaling": [
+          {
+            "imageScalingType": "Fit"
+          }
+        ]
+      }
+    },
+    "cardVisual": {
+      "*": {
+        "title": [
+          {
+            "show": false
+          }
+        ],
+        "visualHeader": [
+          {
+            "show": false
+          }
+        ]
+      }
+    }
+  }
+}

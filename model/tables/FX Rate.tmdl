@@ -1,0 +1,46 @@
+table 'FX Rate'
+	lineageTag: e80ffd73-b0e5-5628-9f69-8b131e61f7db
+	sourceLineageTag: fx_rate
+
+	/// USDMYR at the latest business day in context.
+	measure 'USDMYR Rate' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( AVERAGE ( 'FX Rate'[rate] ), 'Calendar'[day_index] = d, 'FX Rate'[ccy_pair] = "USDMYR" )
+		formatString: 0.0000
+		lineageTag: 17c6ee77-9ac7-5706-a5a3-6be836ecf790
+
+	measure 'USDMYR Rate alt text' = "USDMYR at the latest business day in context: " & FORMAT ( [USDMYR Rate], "0.0000" ) & "."
+		isHidden
+		lineageTag: 0e874cc3-e108-5621-8b5d-c6292a579cd7
+
+	column rate_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: b94e6d74-5402-5788-a4a3-1891653193e5
+		sourceLineageTag: rate_date
+		summarizeBy: none
+		sourceColumn: rate_date
+		annotation SummarizationSetBy = Automatic
+
+	column ccy_pair
+		dataType: string
+		lineageTag: 6c603ff1-52bd-5669-bf3a-5506212a39ff
+		sourceLineageTag: ccy_pair
+		summarizeBy: none
+		sourceColumn: ccy_pair
+
+	column rate
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: 783867b0-4e54-5676-8dd4-eb245d462964
+		sourceLineageTag: rate
+		summarizeBy: sum
+		sourceColumn: rate
+
+	partition 'FX Rate' = entity
+		mode: directLake
+		source
+			entityName: fx_rate
+			schemaName: mkt
+			expressionSource: 'DirectLake - WH_PalmDesk'

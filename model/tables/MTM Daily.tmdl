@@ -1,0 +1,239 @@
+table 'MTM Daily'
+	lineageTag: e7fe491b-3f89-5b8d-9d12-4fc14e7d0bac
+	sourceLineageTag: mtm_daily
+
+	/// Mark-to-market of the open book at the latest business day in context, in MYR.
+	measure 'MTM (MYR)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUM ( 'MTM Daily'[mtm_myr] ), 'Calendar'[day_index] = d )
+		formatString: #,##0
+		lineageTag: 05440320-7068-5613-a3e8-bdb1152caf30
+
+	/// MTM on the preceding business day.
+	measure 'MTM Prior Day (MYR)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUM ( 'MTM Daily'[mtm_myr] ), REMOVEFILTERS ( 'Calendar' ), 'Calendar'[day_index] = d - 1 )
+		formatString: #,##0
+		lineageTag: 47763885-148f-5699-8d17-4f19166c37ab
+
+	/// Day-on-day movement in book MTM.
+	measure 'MTM Change (MYR)' = [MTM (MYR)] - [MTM Prior Day (MYR)]
+		formatString: #,##0
+		lineageTag: 014e40c0-e4f9-5482-97aa-f321152a8538
+
+	/// MTM of physical contracts only (kind = P).
+	measure 'Physical MTM (MYR)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUM ( 'MTM Daily'[mtm_myr] ), 'Calendar'[day_index] = d, 'MTM Daily'[kind] = "P" )
+		formatString: #,##0
+		lineageTag: 1e55ecf6-0405-5f54-af7a-6fbb20499ac8
+
+	/// MTM of FCPO futures lots only (kind = F). Futures are MYR-denominated and carry no FX bucket.
+	measure 'Futures MTM (MYR)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUM ( 'MTM Daily'[mtm_myr] ), 'Calendar'[day_index] = d, 'MTM Daily'[kind] = "F" )
+		formatString: #,##0
+		lineageTag: e08899e3-8cc2-513f-baef-eb899b926f9d
+
+	/// Positions on the book at the latest business day in context.
+	measure 'Open Positions' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( COUNTROWS ( 'MTM Daily' ), 'Calendar'[day_index] = d )
+		formatString: 0
+		lineageTag: 2175d0c2-69a7-5f33-b9f6-3f7626a4efe1
+
+	/// Signed net tonnage: long minus short, in metric tons.
+	measure 'Net Position (MT)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUMX ( 'MTM Daily', 'MTM Daily'[s] * 'MTM Daily'[qty] ), 'Calendar'[day_index] = d )
+		formatString: #,##0.0
+		lineageTag: 8b1413de-708a-5a62-b22a-a9b152aec2fb
+
+	/// Long tonnage, as a positive magnitude.
+	measure 'Long Position (MT)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUM ( 'MTM Daily'[qty] ), 'Calendar'[day_index] = d, 'MTM Daily'[s] = 1 )
+		formatString: #,##0.0
+		lineageTag: 9c202b81-7ebc-560c-b928-b21527cad0d8
+
+	/// Short tonnage, as a positive magnitude.
+	measure 'Short Position (MT)' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( SUM ( 'MTM Daily'[qty] ), 'Calendar'[day_index] = d, 'MTM Daily'[s] = -1 )
+		formatString: #,##0.0
+		lineageTag: f69e1b07-9d37-5999-ba2f-f05e8d11aac7
+
+	/// Positions revalued under the CPO 2026-05-15 curve restatement republished on 2026-05-20.
+	measure 'Restated Positions' =
+			VAR d = MAX ( 'Calendar'[day_index] )
+			RETURN
+			CALCULATE ( COUNTROWS ( 'MTM Daily' ), 'Calendar'[day_index] = d, 'MTM Daily'[restated] = TRUE () )
+		formatString: 0
+		lineageTag: d4d63861-5f5b-51f5-bd89-20c7ae4b3d7f
+
+	measure 'MTM alt text' = "Book mark-to-market at " & FORMAT ( [Latest Business Date], "yyyy-mm-dd" ) & ": " & FORMAT ( [MTM (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: b0ccfac1-d7e3-5a0f-9576-b53e73e4a785
+
+	measure 'Physical MTM alt text' = "Physical contracts mark-to-market: " & FORMAT ( [Physical MTM (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: f6a68293-c5e2-5366-aabe-a8e136b8f30a
+
+	measure 'Futures MTM alt text' = "FCPO futures mark-to-market: " & FORMAT ( [Futures MTM (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: 25879ede-0c31-5044-93bd-b3315137ad1a
+
+	measure 'Open Positions alt text' = "Open positions on the book: " & FORMAT ( [Open Positions], "#,##0" ) & "."
+		isHidden
+		lineageTag: 42a88d5c-ef14-5b3b-833b-77ba1cf9581d
+
+	measure 'Net Position alt text' = "Net position, long minus short: " & FORMAT ( [Net Position (MT)], "#,##0.0" ) & " metric tons."
+		isHidden
+		lineageTag: 7acb2606-ab76-5c79-8f49-f5ef180bfaf1
+
+	measure 'MTM trend alt text' = "Daily book MTM by product over " & FORMAT ( [Business Days], "0" ) & " business days, ending " & FORMAT ( [MTM (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: 195146fe-d1d0-5bdf-add8-e1e420ef793e
+
+	measure 'Product table alt text' = "MTM and long/short tonnage by product. Net " & FORMAT ( [Net Position (MT)], "#,##0.0" ) & " MT."
+		isHidden
+		lineageTag: 8760e330-0069-53c0-af99-aaf2e68404a8
+
+	column biz_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: ef60b90e-77cd-5607-85fe-36528d9af098
+		sourceLineageTag: biz_date
+		summarizeBy: none
+		sourceColumn: biz_date
+		annotation SummarizationSetBy = Automatic
+
+	column kind
+		dataType: string
+		lineageTag: 61f7de26-898d-5d5d-b893-985b1dc8c380
+		sourceLineageTag: kind
+		summarizeBy: none
+		sourceColumn: kind
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3a29b691-b9e3-55df-845f-2c89c457402d
+		sourceLineageTag: id
+		summarizeBy: none
+		sourceColumn: id
+
+	column ref
+		dataType: string
+		lineageTag: 08a19fc4-16e6-5cff-af85-facd0d2f242b
+		sourceLineageTag: ref
+		summarizeBy: none
+		sourceColumn: ref
+
+	column product_code
+		dataType: string
+		lineageTag: 21c68194-5ba5-5f21-a52b-712d89f2a11e
+		sourceLineageTag: product_code
+		summarizeBy: none
+		sourceColumn: product_code
+
+	column cp_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 58485384-7d34-5b8b-8d08-640889767c9e
+		sourceLineageTag: cp_id
+		summarizeBy: none
+		sourceColumn: cp_id
+
+	column tenor_month
+		dataType: string
+		lineageTag: ddf77d52-f5c5-5ffa-898d-ad28d67d2a81
+		sourceLineageTag: tenor_month
+		summarizeBy: none
+		sourceColumn: tenor_month
+
+	column s
+		dataType: int64
+		formatString: 0
+		lineageTag: 9785f662-5f98-500f-8a99-8153144035fe
+		sourceLineageTag: s
+		summarizeBy: none
+		sourceColumn: s
+
+	column qty
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: 901fdf8d-46e1-5dfa-b479-8713cec59f00
+		sourceLineageTag: qty
+		summarizeBy: sum
+		sourceColumn: qty
+
+	column tau
+		dataType: int64
+		formatString: 0
+		lineageTag: 4e2db284-0d96-5cb0-bdf8-8b30d3504a97
+		sourceLineageTag: tau
+		summarizeBy: none
+		sourceColumn: tau
+
+	column curve_price
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: ad993b02-8d9c-501c-a564-7805ee516d10
+		sourceLineageTag: curve_price
+		summarizeBy: sum
+		sourceColumn: curve_price
+
+	column contract_price
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: aa503040-8fe8-5863-864e-9fdb0d465fe8
+		sourceLineageTag: contract_price
+		summarizeBy: sum
+		sourceColumn: contract_price
+
+	column fx
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: 51e76317-c628-5690-b357-024296e4ac82
+		sourceLineageTag: fx
+		summarizeBy: sum
+		sourceColumn: fx
+
+	column mtm_myr
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 3f282f7a-080a-56e7-857a-b7130003a010
+		sourceLineageTag: mtm_myr
+		summarizeBy: sum
+		sourceColumn: mtm_myr
+
+	column version_no
+		dataType: int64
+		formatString: 0
+		lineageTag: 0aab0c7f-9a6c-506f-9d88-6a1b27809d15
+		sourceLineageTag: version_no
+		summarizeBy: none
+		sourceColumn: version_no
+
+	column restated
+		dataType: boolean
+		lineageTag: 3a45315c-b0cd-5dff-84ae-c3ef9291f7d3
+		sourceLineageTag: restated
+		summarizeBy: none
+		sourceColumn: restated
+
+	partition 'MTM Daily' = entity
+		mode: directLake
+		source
+			entityName: mtm_daily
+			schemaName: eng
+			expressionSource: 'DirectLake - WH_PalmDesk'

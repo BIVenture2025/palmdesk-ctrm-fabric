@@ -1,0 +1,81 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "Bridge",
+  "position": {
+    "x": 20,
+    "y": 244,
+    "z": 0,
+    "height": 268,
+    "width": 736,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "waterfallChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Bucket"
+                    }
+                  },
+                  "Property": "bucket_name"
+                }
+              },
+              "queryRef": "Bucket.bucket_name",
+              "nativeQueryRef": "bucket_name",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Attribution Bucket Daily"
+                    }
+                  },
+                  "Property": "Bucket Amount (MYR)"
+                }
+              },
+              "queryRef": "Attribution Bucket Daily.Bucket Amount (MYR)",
+              "nativeQueryRef": "Bucket Amount (MYR)",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Attribution Bucket Daily"
+                    }
+                  },
+                  "Property": "Bridge alt text"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

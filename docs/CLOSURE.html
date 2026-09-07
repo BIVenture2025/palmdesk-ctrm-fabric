@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project 27 — Closure Analysis</title>
+<style>
+  :root{
+    --bg:#0e1420; --panel:#161d2b; --panel2:#1c2534; --line:#2a3547;
+    --ink:#e8edf5; --ink2:#9aa8bd; --ink3:#6b7a91;
+    --new:#2dd4bf; --keep:#5b8def; --risk:#f5a524; --stop:#f2555a;
+    --r:10px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;}
+  .wrap{max-width:1240px;margin:0 auto;padding:34px 22px 70px}
+  header h1{font-size:27px;margin:0 0 6px;letter-spacing:-.4px}
+  header .sub{color:var(--ink2);font-size:14.5px;margin:0 0 4px}
+  header .meta{color:var(--ink3);font-size:12.5px;font-variant-numeric:tabular-nums}
+  .pitch{margin:22px 0 26px;padding:16px 18px;background:var(--panel);
+         border:1px solid var(--line);border-left:3px solid var(--new);border-radius:var(--r);
+         color:var(--ink);font-size:15px}
+  .pitch b{color:var(--new);font-weight:600}
+
+  nav{display:flex;gap:6px;margin:0 0 22px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  nav button{background:none;border:0;color:var(--ink3);font:inherit;font-size:14px;
+             padding:10px 15px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  nav button:hover{color:var(--ink2)}
+  nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--new)}
+  section[hidden]{display:none}
+
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin:0 0 18px;font-size:12.5px;color:var(--ink2)}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+
+  .layer{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+         padding:14px 16px;margin:0 0 10px}
+  .layer > h3{margin:0 0 3px;font-size:13px;letter-spacing:.9px;text-transform:uppercase;
+         color:var(--ink2);font-weight:600}
+  .layer > p.note{margin:0 0 12px;font-size:13px;color:var(--ink3)}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .card{flex:1 1 190px;background:var(--panel2);border:1px solid var(--line);
+        border-radius:8px;padding:11px 13px;position:relative;min-width:180px}
+  .card.new{border-color:rgba(45,212,191,.45)}
+  .card.new::after{content:"NEW";position:absolute;top:9px;right:10px;font-size:9.5px;
+        letter-spacing:.7px;color:var(--new);font-weight:700}
+  .card.risk{border-color:rgba(245,165,36,.45)}
+  .card.risk::after{content:"AT RISK";position:absolute;top:9px;right:10px;font-size:9.5px;
+        letter-spacing:.7px;color:var(--risk);font-weight:700}
+  .card.killed{border-color:rgba(242,85,90,.45);opacity:.72}
+  .card.killed::after{content:"KILLED";position:absolute;top:9px;right:10px;font-size:9.5px;
+        letter-spacing:.7px;color:var(--stop);font-weight:700}
+  .card.killed h4{text-decoration:line-through;text-decoration-color:var(--stop)}
+  /* overflow-wrap is load-bearing: a long single-word heading (an API name) otherwise
+     collides with the absolutely-positioned badge. Caught by render check, P25 2026-08-17. */
+  .card h4{margin:0 0 4px;font-size:14px;font-weight:600;padding-right:56px;overflow-wrap:anywhere}
+  .card p{margin:0;font-size:12.5px;color:var(--ink2);line-height:1.45}
+  .card code{font-size:11.5px;color:var(--ink3);background:rgba(255,255,255,.04);
+        padding:1px 4px;border-radius:3px}
+  .arrow{text-align:center;color:var(--ink3);font-size:17px;line-height:1;margin:2px 0 8px;
+        letter-spacing:2px}
+  .loop{background:linear-gradient(90deg,rgba(45,212,191,.10),rgba(45,212,191,.02));
+        border:1px dashed rgba(45,212,191,.45);border-radius:var(--r);padding:12px 16px;
+        margin:10px 0 12px;font-size:13.5px;color:var(--ink)}
+  .loop b{color:var(--new)}
+  .stopbox{background:linear-gradient(90deg,rgba(242,85,90,.10),rgba(242,85,90,.02));
+        border:1px dashed rgba(242,85,90,.45);border-radius:var(--r);padding:12px 16px;
+        margin:10px 0 18px;font-size:13.5px;color:var(--ink)}
+  .stopbox b{color:var(--stop)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 20px}
+  th,td{text-align:left;padding:9px 11px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{color:var(--ink2);font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;font-weight:600}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  tr.hi td{background:rgba(45,212,191,.07)}
+  tr.dead td{background:rgba(242,85,90,.07)}
+  .tag{display:inline-block;font-size:10.5px;letter-spacing:.5px;font-weight:700;
+       padding:2px 7px;border-radius:20px;white-space:nowrap}
+  .t-new{background:rgba(45,212,191,.14);color:var(--new)}
+  .t-keep{background:rgba(91,141,239,.14);color:var(--keep)}
+  .t-risk{background:rgba(245,165,36,.14);color:var(--risk)}
+  .t-stop{background:rgba(242,85,90,.14);color:var(--stop)}
+
+  h2.sec{font-size:17px;margin:26px 0 10px;font-weight:600}
+  h2.sec:first-child{margin-top:4px}
+  p.lead{color:var(--ink2);font-size:14px;margin:0 0 16px;max-width:78ch}
+  .caveat{border-left:3px solid var(--risk);background:rgba(245,165,36,.06);
+          padding:11px 14px;border-radius:6px;margin:0 0 20px;font-size:13.5px;color:var(--ink2)}
+  .caveat b{color:var(--risk)}
+
+  .kpis{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 22px}
+  .kpi{flex:1 1 150px;background:var(--panel);border:1px solid var(--line);
+       border-radius:var(--r);padding:13px 15px;min-width:145px}
+  .kpi .v{font-size:23px;font-weight:650;font-variant-numeric:tabular-nums;letter-spacing:-.5px}
+  .kpi .l{font-size:11.5px;color:var(--ink3);margin-top:3px;line-height:1.35}
+  .kpi.accent .v{color:var(--new)}
+  .kpi.stop .v{color:var(--stop)}
+
+  .phases{position:relative;padding-left:26px}
+  .phases::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;
+       background:var(--line)}
+  .ph{position:relative;margin:0 0 14px;background:var(--panel);border:1px solid var(--line);
+      border-radius:var(--r);padding:12px 15px}
+  .ph::before{content:"";position:absolute;left:-24px;top:19px;width:11px;height:11px;
+      border-radius:50%;background:var(--panel);border:2px solid var(--line)}
+  .ph.now::before{background:var(--new);border-color:var(--new)}
+  .ph.now{border-color:rgba(45,212,191,.45)}
+  .ph.done{border-color:rgba(45,212,191,.28)}
+  .ph.done::before{background:var(--new);border-color:var(--new)}
+  .ph .hd{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap}
+  .ph h4{margin:0;font-size:14.5px;font-weight:600}
+  .ph .sess{font-size:11.5px;color:var(--ink3);white-space:nowrap}
+  .ph p{margin:5px 0 0;font-size:13px;color:var(--ink2)}
+  .ph .status{margin:5px 0 0;font-size:12.5px;color:var(--ink2)}
+  .ph .status .chk{color:var(--new);font-weight:700;margin-right:4px}
+  .ph .gate{margin-top:7px;font-size:12.5px;color:var(--ink3);border-top:1px solid var(--line);
+      padding-top:7px}
+  .ph .gate b{color:var(--ink2);font-weight:600}
+  .ph .cap{font-size:10.5px;letter-spacing:.5px;font-weight:700;padding:2px 7px;border-radius:20px;
+      background:rgba(245,165,36,.14);color:var(--risk);white-space:nowrap;margin-left:8px}
+  .ph .cap.free{background:rgba(91,141,239,.14);color:var(--keep)}
+  p.meta.status-now{color:var(--new);margin-top:4px;font-weight:500}
+
+  footer{margin-top:34px;padding-top:16px;border-top:1px solid var(--line);
+         color:var(--ink3);font-size:12px}
+  @media(max-width:640px){ .card{flex:1 1 100%} .kpi{flex:1 1 45%} }
+
+  :root{
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70;
+    --good:#0ca30c; --warn:#fab219; --serious:#ec835a; --crit:#d03b3b;
+    --grid:#2c2c2a; --axis:#383835; --muted:#898781;
+  }
+  .tiles{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+  .tile{flex:1 1 165px;min-width:155px;background:var(--panel);border:1px solid var(--line);
+        border-radius:var(--r);padding:13px 15px}
+  .tile .k{font-size:11.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--ink3);
+        margin:0 0 6px;font-weight:600}
+  .tile .v{font-size:26px;font-weight:600;letter-spacing:-.6px;line-height:1.15}
+  .tile .n{font-size:12px;color:var(--ink2);margin-top:5px;line-height:1.4;overflow-wrap:anywhere}
+  /* A long filename in a KPI note otherwise runs straight out of the tile — caught by the
+     headless render check, P25 2026-08-19. Same class as .card h4's overflow-wrap. */
+  .tile code,td code,figcaption code{overflow-wrap:anywhere}
+  .tile.hero{flex:1 1 100%;background:linear-gradient(90deg,rgba(45,212,191,.10),rgba(45,212,191,.02));
+        border-color:rgba(45,212,191,.4)}
+  .tile.hero .v{font-size:38px;color:var(--new)}
+  .v.good{color:var(--good)} .v.warn{color:var(--warn)} .v.crit{color:var(--crit)}
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
+        padding:16px 18px;margin:0 0 18px}
+  .panel h4{margin:0 0 4px;font-size:13px;letter-spacing:.9px;text-transform:uppercase;
+        color:var(--ink2);font-weight:600}
+  .basis{font-size:12px;color:var(--ink3);margin:6px 0 0;font-style:italic}
+  .warnbox{margin:18px 0 24px;padding:15px 18px;background:rgba(245,165,36,.07);
+        border:1px solid rgba(245,165,36,.35);border-left:3px solid var(--risk);
+        border-radius:var(--r);font-size:14.5px}
+  .warnbox b{color:var(--risk)}
+  figure{margin:0 0 22px;background:var(--panel);border:1px solid var(--line);
+        border-radius:var(--r);padding:16px 18px}
+  figure h4{margin:0 0 2px;font-size:14.5px;color:var(--ink);text-transform:none;letter-spacing:0}
+  figure .sub{font-size:12.5px;color:var(--ink2);margin:0 0 14px}
+  figcaption{font-size:12.5px;color:var(--ink3);margin-top:10px;line-height:1.5}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 12px;font-size:12.5px;color:var(--ink2)}
+  .legend span{display:flex;align-items:center;gap:7px}
+  .dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+  svg text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+  tr.hi td{background:rgba(45,212,191,.07)}
+  tr.bad td{background:rgba(208,59,59,.07)}
+  .t-ok{background:rgba(12,163,12,.16);color:var(--good)}
+  .t-diff{background:rgba(250,178,25,.14);color:var(--warn)}
+  .t-no{background:rgba(208,59,59,.16);color:var(--crit)}
+  .t-un{background:rgba(154,168,189,.14);color:var(--ink2)}
+  .t-new{background:rgba(45,212,191,.14);color:var(--new)}
+  .tt{position:fixed;pointer-events:none;background:#0a0f18;border:1px solid var(--line);
+      border-radius:7px;padding:7px 10px;font-size:12.5px;color:var(--ink);opacity:0;
+      transition:opacity .1s;z-index:50;box-shadow:0 6px 20px rgba(0,0,0,.5);max-width:280px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Project 27 — Closure Analysis</h1>
+  <p class="sub">PalmDesk · Fabric End-to-End CTRM Analytics Layer · Malaysian palm-oil trading desk (fictional) · Type D platform build · workspace <code>WS_PalmDesk_Dev</code></p>
+  <p class="meta">Phases 0–3 · 3 sessions · 2026-09-06 → 2026-09-07 · trial capacity lapses ≈2026-10-03 · compiled Session 3 (Skill 10) · all figures re-derived on the day, not copied forward</p>
+  <p class="meta status-now">Built and verified end to end. <b>4 of 7 contracted components delivered</b>; three were killed against criteria written before the build, in the session each failed. The §132 render gate passed on all four report pages for the first time this session.</p>
+</header>
+
+<div class="pitch">A Malaysian palm-oil desk marks 449 open positions daily across physical CPO, PKO and RBDPO and an FCPO futures hedge. This build puts the whole chain in Fabric — a Warehouse with five T-SQL engines running 120 business days, a six-bucket P&amp;L attribution that reconciles to <b>0.00 on 120 of 120 days</b>, IFRS 9 hedge effectiveness, credit exposure with six real breaches, and a Direct Lake semantic model behind a four-page report. Its most valuable output is not the estate. It is <b>the discovery that a Fabric Warehouse binds through Direct Lake on SQL, not Direct Lake on OneLake</b> — a one-line difference that passes every structural validator this engine owns and is visible only in a rendered value.</div>
+
+<nav role="tablist">
+  <button role="tab" aria-selected="true" data-t="outcome">Outcome</button>
+  <button role="tab" aria-selected="false" data-t="finding">The finding</button>
+  <button role="tab" aria-selected="false" data-t="verify">Verification</button>
+  <button role="tab" aria-selected="false" data-t="cost">Cost</button>
+  <button role="tab" aria-selected="false" data-t="open">Outstanding</button>
+</nav>
+
+<!-- OUTCOME -->
+<section id="outcome">
+<h2 class="sec">Where this landed</h2><div class="tiles"><div class="tile"><p class="k">contracted components delivered</p><div class="v warn">4 / 7</div><p class="n">3 killed on written criteria, each in the session it failed</p></div><div class="tile"><p class="k">attribution residual, MYR</p><div class="v good">0.00</div><p class="n">120 of 120 days; re-verified after the S3 replay</p></div><div class="tile"><p class="k">measures matching Warehouse truth</p><div class="v good">14 / 14</div><p class="n">RPT_PalmDesk_Check vs figures computed independently in T-SQL</p></div><div class="tile"><p class="k">report pages rendering correctly</p><div class="v good">4 / 4</div><p class="n">§132 gate — first session it passed on the whole report</p></div><div class="tile"><p class="k">control totals unchanged by replay</p><div class="v good">39 / 39</div><p class="n">values identical; only frozen_at moved</p></div><div class="tile"><p class="k">data visuals with measure-bound altText</p><div class="v">32 / 32</div><p class="n">live and verified in the tenant 2026-09-07 08:20 — took two publishes, see Findings</p></div></div><p class="lead">Every number above was re-derived on 2026-09-07 by query or by file scan. None was copied from a handover.</p><h2 class="sec">Contracted components</h2><table>
+<thead><tr><th>#</th><th>Component</th><th>Outcome</th><th>Basis</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Warehouse + T-SQL engines</td><td>Delivered as specified</td><td>16 tables, 5,919 rows, 5 procedures, 120 days; 39/39 control totals re-verified</td></tr>
+<tr><td>2</td><td>Open mirrored DB + notebook</td><td>Not delivered — kill executed</td><td>Landing zone empty (portal 404 + SQL endpoint). Notebook reviewed line by line and sound; never run</td></tr>
+<tr><td>3</td><td>Direct Lake semantic model</td><td>Delivered differently</td><td>12 tables · 108 columns · 13 relationships · <b>82 measures</b> · 3 calculation groups, all live. Bound via Sql.Database, not the on-OneLake form</td></tr>
+<tr><td>4</td><td>Report, 4 pages</td><td>Delivered as specified</td><td>56 visuals; all four pages render in the service with values matching Warehouse truth</td></tr>
+<tr class="dead"><td>5</td><td>Activator rules</td><td>Not delivered — documented, not live</td><td>No Activator/Reflex tool in this session's tool surface; no Reflex item in the workspace. Both rules remain specified in contract §12</td></tr>
+<tr><td>6</td><td>Variable Library + Prod replay</td><td>Delivered and strengthened</td><td>25 variables; replay proven deterministic across 4 EOD re-runs + hedge tests + re-freeze</td></tr>
+<tr class="dead"><td>7</td><td>SQL database probe</td><td>Not delivered — killed S1</td><td>Reachable only as a read-only analytics endpoint; Tables/Create denied by external policy</td></tr>
+</tbody></table><div class="caveat">Three components were killed. Each had its kill criterion written at Phase 0 and executed on schedule. Counting them as failure misreads the contract — killing them on time is the contract working.</div>
+</section>
+
+<!-- THE FINDING -->
+<section id="finding" hidden>
+<h2 class="sec">The finding that cost the most, and is worth the most</h2><p class="lead">Every Direct Lake model this engine had built used the <b>Direct Lake on OneLake</b> connector <code>AzureStorage.DataLake(…)</code>. Against a Fabric <b>Warehouse</b> that form validates on create, loads its metadata, and draws all twelve tables with their relationships and measures in the modelling canvas — and never binds a single table. Every visual returns <code>Missing_References</code>.</p><div class="panel"><h4>The one-line fix</h4><pre>Sql.Database("&lt;workspace&gt;.datawarehouse.fabric.microsoft.com", "&lt;warehouse item id&gt;")</pre><p>Swapping the connector was the whole of it. The model then matched Warehouse truth on 14 of 14 measures, the zero-relationship probe passed, and all seven visual types rendered clean across all four warehouse schemas.</p><p class="basis">FINDINGS_S2.md F-29; Gate_Check_Results.md Addendum 3</p></div><h2 class="sec">Why it survived three projects</h2><table>
+<thead><tr><th class="num"></th><th>Project</th><th>Direct Lake source</th><th>OneLake connector correct there?</th></tr></thead>
+<tbody>
+<tr><td class="num">24</td><td>GlobalEnergy</td><td>Lakehouse</td><td>Yes</td></tr>
+<tr><td class="num">26</td><td>VeloTrack</td><td>Lakehouse (LH_VeloTrack Gold)</td><td>Yes</td></tr>
+<tr class="hi"><td class="num">27</td><td>PalmDesk</td><td>Warehouse (WH_PalmDesk)</td><td>No — needs Sql.Database</td></tr>
+</tbody></table><p class="lead">The engine did not carry a guess forward. It carried a shape that had been correct <b>twice, in two delivered projects</b>, and every repetition made it look more settled. P27 is the first time this engine pointed Direct Lake at a Warehouse.</p><div class="warnbox"><b>The rule this leaves behind.</b> Grep a delivered sibling, never write a shape from memory — <b>and record what the sibling was proven against. A shape's proof is scoped to its source; repeated success against the same source type is not evidence for a different one.</b> Choose the Direct Lake connector from what the SOURCE is, and prove it with a two-table probe before building on it.</div><h2 class="sec">Why nothing mechanical caught it</h2><p class="lead">The OneLake form is a <i>legal</i> datasource kind. The create validator accepts it, <code>get_item_definition</code> reads it back intact, <code>validate_pbip.py</code> and the PBIR schema validator both pass, and the modelling canvas draws the whole model. <b>Only a rendered value, checked against a number computed somewhere else, can see it</b> — which is §132 in its sharpest form.</p>
+</section>
+
+<!-- VERIFICATION -->
+<section id="verify" hidden>
+<h2 class="sec">What was verified this session, and how</h2><table>
+<thead><tr><th>Check</th><th>Result</th><th>How</th></tr></thead>
+<tbody>
+<tr><td>Calculation groups answer correctly</td><td>PASS</td><td>Bucket / Time / Currency read against T-SQL figures computed <i>before</i> the render; DOM read, not pixels</td></tr>
+<tr><td>Zero-relationship probe</td><td>PASS</td><td>Six buckets returning six <i>different</i> values summing to ΔMTM −168,330; segment split BUYER 1,119,906,136 / SUPPLIER 442,846</td></tr>
+<tr><td>§132 render gate, Position</td><td>PASS</td><td>MTM −168K · Physical 151K · Futures −320K · 449 positions · −84.3K MT · USDMYR 4.4205</td></tr>
+<tr><td>§132 render gate, Attribution</td><td>PASS</td><td>ΔMTM −168K · residual 0.00 · max unexplained 312.50K · 3 days outside tolerance</td></tr>
+<tr><td>§132 render gate, Credit</td><td>PASS</td><td>Exposure 1bn vs 1,120,348,981.90 · 4 in breach · 6 at ≥90% · ECL 29M vs 29,115,951</td></tr>
+<tr><td>§132 render gate, Hedge</td><td>PASS</td><td>27 assessed / 26 effective / 96.3% · ineffectiveness −2M vs −1,740,000 · OCI −30M vs −29,858,450</td></tr>
+<tr><td>Prod replay determinism</td><td>PASS</td><td>4 EOD re-runs + hedge tests + re-freeze → 39/39 control totals identical in value; only frozen_at moved</td></tr>
+<tr><td>Bucket fact still consistent after replay</td><td>PASS</td><td>120 days compared, 120 matching, worst absolute difference 0.000000</td></tr>
+<tr><td>Structural validation</td><td>0 errors</td><td>validate_pbip.py over the project: 271 visual.json read, 57 tmdl, 2 pbip; 6 warnings, none on the deliverable</td></tr>
+</tbody></table><div class="panel"><h4>One number that does not fully reconcile, stated rather than smoothed</h4><p>The Currency calculation group's <b>USD</b> cell renders <b>−38,079</b>. The independently computed quotient is <b>−38,079.715775</b>, which under the inherited <code>#,##0</code> format should display −38,080. Both inputs were verified on the same rendered page — ΔMTM −168,330 and USDMYR 4.4205, each matching the Warehouse — so the conversion is right to 0.002% and the last displayed digit is a formatting-layer artefact. <b>The cause of that digit was not established.</b> It is recorded as an open question rather than as a pass.</p><p class="basis">Rendered cell read from the DOM; quotient from T-SQL over eng.attribution_daily ÷ mkt.fx_rate</p></div><div class="caveat">A defect found the same way, and fixed: the <code>Day over Day</code> calculation item as first written differenced the whole filter context against a single prior day, so its grand total was meaningless. It was caught only because the expected value was computed <b>before</b> the render was read — the rendered 15,581,829 would have looked entirely plausible. An explicit <code>Current Day</code> item now gives it a self-consistent left-hand side.</div>
+</section>
+
+<!-- COST -->
+<section id="cost" hidden>
+<h2 class="sec">Cost and session hygiene</h2><div class="tiles"><div class="tile"><p class="k">sessions</p><div class="v good">3</div><p class="n">none partial, zero compaction boundaries — the first complete cost record in the ledger</p></div><div class="tile"><p class="k">active working time</p><div class="v">9.5 h</div><p class="n">7 sittings across 2026-09-06 → 09-07</p></div><div class="tile"><p class="k">assistant turns</p><div class="v">1,400</div><p class="n">868 tool calls</p></div><div class="tile"><p class="k">cache-read per turn</p><div class="v warn">427,129</div><p class="n">NOT flat — S3 is the highest; see the note below</p></div><div class="tile"><p class="k">browser share</p><div class="v warn">19%</div><p class="n">over the engine's cap — structural, and reported not optimised away</p></div><div class="tile"><p class="k">cache-read tokens</p><div class="v">598.0M</div><p class="n">output 2,284,489 · cache-write 12,662,991</p></div></div><h2 class="sec">Per session</h2><table>
+<thead><tr><th>S</th><th>Phase</th><th class="num">Turns</th><th class="num">Hours</th><th class="num">Cache read</th><th class="num">cr/turn</th><th class="num">Browser</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Gates, scaffold, data plane</td><td class="num">558</td><td class="num">3.2</td><td class="num">241,199,284</td><td class="num">432,257</td><td class="num">19%</td></tr>
+<tr><td>2</td><td>Model, report, alerts</td><td class="num">494</td><td class="num">4.2</td><td class="num">197,099,499</td><td class="num">398,987</td><td class="num">26%</td></tr>
+<tr><td>3</td><td>Resolve, verify, replay, close</td><td class="num">348</td><td class="num">2.0</td><td class="num">159,681,533</td><td class="num">458,855</td><td class="num">10%</td></tr>
+</tbody></table><div class="panel"><h4>The split-session number — and the correction this page had to make</h4><p><code>cr/turn</code> is the quantity the split-session hypothesis predicts stays <b>flat</b> rather than growing. P27 reads <b>432,257 → 398,987 → 458,855</b>. <b>It is not flat, and Session 3 is the highest of the three.</b></p><p>This panel originally said the opposite. The mid-session checkpoint at 06:25:29Z read <b>398,183</b> — a tidy flat-to-falling result. The mandated close re-capture at 06:40:37Z, taken after the handover as §113/§125 requires, read <b>458,855</b>. Fifteen minutes of writing moved it 15%.</p><p><b>The finding underneath is worth more than the number:</b> the close ritual is the most expensive part of a session per turn — maximum context depth, output-heavy — so any session that snapshots before its close reports a flattering figure. P27 cannot settle the hypothesis either way, because its three sessions did different work: S1 built, S2 diagnosed, S3 verified <i>and closed</i>.</p><p class="basis">capture_session_cost.py --merge over _cost/ (3 snapshots, none partial); checkpoint 06:25:29Z vs close re-capture 06:40:37Z</p></div><div class="caveat">Subagents are reported separately and not netted into the totals: 10 transcripts across S1 and S2, 66,894,783 cache-read and 268,072 output. Real spend on the same task. Session 3 used none.</div>
+</section>
+
+<!-- OUTSTANDING -->
+<section id="open" hidden>
+<h2 class="sec">What is genuinely outstanding</h2><div class="warnbox"><b>The semantic model outgrew its only deployment channel.</b> Model array JSON went 55,333 (S2, deployable) → 60,480 (calculation groups, deployable) → 69,736 (plus the 32 altText measures, <b>could not be emitted</b>). The alt measures therefore exist on disk and in both <code>.pbip</code> packages but <b>not in the live model</b>. Fabric REST, <code>fab</code>, <code>az</code> and OneLake are all unreachable from either shell on this tenant, so Core MCP is the only push channel there is.</div><table>
+<thead><tr><th>Item</th><th>State</th><th>What closes it</th></tr></thead>
+<tbody>
+<tr><td>altText in the service</td><td><b>✅ CLOSED 2026-09-07 08:20</b></td><td>Landed on the second publish, from the byPath package with the model overwrite accepted. Verified on the AltProof card, against the Warehouse, and by re-running the scan that had failed</td></tr>
+<tr><td>Activator rules</td><td>Documented, not live</td><td>Add the Activator MCP connector; both rules and their windows are in contract §12</td></tr>
+<tr><td>Mirrored database</td><td>Dropped, kill executed</td><td>One Run-all on NB_PalmDesk_MarketFeed converts it from dropped to evidenced</td></tr>
+<tr><td>C7 folder disposition</td><td>Proposed, nothing moved</td><td>One go-ahead; Skill 10 requires approval before any file moves</td></tr>
+<tr><td>E3 export</td><td>Due before 2026-09-26</td><td>Trial capacity lapses ≈2026-10-03</td></tr>
+<tr><td>Publishing (Skill 9)</td><td>Not started</td><td>Closure precedes publishing; hand-off written separately</td></tr>
+</tbody></table><div class="panel"><h4>Why the default package changed</h4><p>Session 2 made <code>P27_PalmDesk_publish/</code> (byConnection) the default, because a byPath <code>.pbip</code> can never metadata-match a model the service rewrote on ingest and Desktop therefore always offers to overwrite. That reasoning still holds — but the publish package now binds altText to 32 measures the live model does not have. <b>The coherent route today is the byPath package</b>, accepting the overwrite: the local model was diffed byte-for-byte against the deployed one and is a strict superset (same 12 tables, plus 3 calculation groups and 32 hidden alt measures).</p><p class="basis">F-16, F-32, F-33; diff run 2026-09-07</p></div><h2 class="sec">Addendum — it took two publishes, and checking the first one produced the project's best findings</h2><div class="panel"><h4>Closed 2026-09-07 08:20 — it took two publishes</h4><p>The second publish, from the <b>byPath</b> package with the model overwrite accepted, landed. Verified three ways, none of them <i>the report looks fine</i>: the <code>AltProof</code> card renders three correct sentences; the breach count checks out against the Warehouse independently (<b>4 of 40 counterparties at 2026-08-28</b>); and the exact scan that failed at 07:05 now passes on the deliverable itself. <b>9 items, unchanged GUIDs, no duplicate dataset</b> — the risk flagged in the hand-off did not materialise, and because the operator published without saving, the pinned <code>visualContainer</code> 2.11.0 survived intact (56/56).</p><p>What follows is why it took two, and it is the part worth keeping.</p><p class="basis">AltProof render + T-SQL breach count + re-run of the 07:05 scan, 2026-09-07 08:20</p></div><div class="warnbox"><b>The FIRST publish, at 06:55, did not carry the model.</b> The folder opened was <code>P27_PalmDesk_publish/</code> — the <b>byConnection</b> package, which holds no <code>SemanticModel</code> folder and binds the live model by connection. It pushed the report and nothing else. The workspace still reconciled to 9 items with unchanged GUIDs and nothing warned, because the publish was correct for what it was. <b>Both package kinds open in Desktop and publish without complaint, and only one can carry a model — and the one named <code>_publish</code> is the one that cannot.</b></div><div class="panel"><h4>Why a clean render proved nothing</h4><p>Power BI <b>silently drops</b> a <code>general.altText</code> binding to a missing measure. The republished report shows <b>28 containers, 0 error visuals</b>, every figure matching Warehouse truth — <b>pixel-identical to a correct build</b> with all 32 bindings broken. <code>ALTTEXT_COVERAGE 32/32</code> passing on disk says nothing about the tenant.</p><p>So the alt measures were bound as <b>visible values</b> on an <code>AltProof</code> card in the check report, which fails loudly and names them: <i>Something's wrong with one or more fields: (MTM Daily) MTM alt text, (MTM Daily) Open Positions alt text, (Exposure Daily) Breach count alt text</i>. <b>That card is left in place and left failing on purpose</b> — it is the live regression test. When it renders three sentences instead of an error, the item is closed.</p><p>This is the project's central lesson arriving a second time: <b>a clean-looking render of a broken model is indistinguishable from a correct one unless the number came from somewhere else.</b> First it was the Direct Lake connector; now it is a formatting property. Same trap, different surface.</p><p class="basis">F-40, F-41; DOM read of both reports 2026-09-07 07:05–07:20</p></div><div class="panel"><h4>Both automated routes were then measured, and both are closed</h4><p><b>Core MCP.</b> Rebuilding the model from source and computing both payloads deterministically: <b>60,490</b> without the alt measures (this is what is live) versus <b>69,186</b> with them. The alt measures cost 8,696 payload chars and the gap to the known-good is 8,696 — <b>there is no slack.</b> Every reclamation was measured: dropping inert <code>SummarizationSetBy</code> annotations saves 944, blank-line padding 616, and column <code>sourceLineageTag</code> 4,308 — but that last one is the protected Direct Lake diagnostic the contract forbids reverting. <b>All three together still land at 63,330, above the wall.</b> No safe compaction exists.</p><p><b>XMLA/TOM.</b> Taken as the next channel down per contract §4. The channel is <b>real</b> — <code>ListConnections</code> returned a live connection object to <code>SM_PalmDesk</code> over the workspace XMLA endpoint, minted outside the session on 2026-09-06. Its token had expired, and every <code>ConnectFabric</code> re-auth returned <code>Device did not respond within 60s</code>: the interactive sign-in cannot finish inside the device bridge's 60-second call ceiling. <b>XMLA is usable from a session only while a token minted outside that session is still valid</b> — after which it carries batch model edits of unbounded size, because the payload never has to be one agent utterance. <b>It is the only known way past the emit ceiling, and one sign-in on the machine before a session unlocks it.</b></p><p class="basis">F-42 and the F-33 correction; payloads recomputed from source 2026-09-07</p></div>
+</section>
+
+<footer>Project 27 · PalmDesk · closure compiled 2026-09-07, Session 3 · all data synthetic, fixed seed 20260906 · Serantau Palm Trading Sdn. Bhd. and its 40 counterparties are fictitious</footer>
+
+</div>
+<div class="tt" id="tt"></div>
+<script>
+  const tabs=[...document.querySelectorAll('nav button')];
+  tabs.forEach(b=>b.addEventListener('click',()=>{
+    tabs.forEach(x=>x.setAttribute('aria-selected', x===b));
+    document.querySelectorAll('section').forEach(s=>s.hidden = s.id!==b.dataset.t);
+    window.scrollTo({top:0,behavior:'smooth'});
+  }));
+</script>
+</body>
+</html>

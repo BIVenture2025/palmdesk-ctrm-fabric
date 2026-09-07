@@ -1,0 +1,734 @@
+[
+ {
+  "friendly": "Calendar",
+  "schema": "ref",
+  "entity": "calendar",
+  "columns": [
+   {
+    "COLUMN_NAME": "biz_date",
+    "DATA_TYPE": "date",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "day_index",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "month_key",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "is_month_end",
+    "DATA_TYPE": "bit",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   }
+  ]
+ },
+ {
+  "friendly": "Counterparty",
+  "schema": "ref",
+  "entity": "counterparty",
+  "columns": [
+   {
+    "COLUMN_NAME": "cp_id",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "cp_code",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "cp_name",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "country",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "segment",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "grade",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "has_netting",
+    "DATA_TYPE": "bit",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "payment_terms_days",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "we_deliver_first",
+    "DATA_TYPE": "bit",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   }
+  ]
+ },
+ {
+  "friendly": "Product",
+  "schema": "ref",
+  "entity": "product",
+  "columns": [
+   {
+    "COLUMN_NAME": "product_code",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "product_name",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "curve_ccy",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "unit",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   }
+  ]
+ },
+ {
+  "friendly": "Physical Contract",
+  "schema": "trd",
+  "entity": "physical_contract",
+  "columns": [
+   {
+    "COLUMN_NAME": "contract_id",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "contract_ref",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "cp_id",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "product_code",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "side",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "trade_date",
+    "DATA_TYPE": "date",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "delivery_date",
+    "DATA_TYPE": "date",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "price_ccy",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "terms",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "is_mspo",
+    "DATA_TYPE": "bit",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "confirmed_price",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "confirmed_qty_mt",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 3
+   }
+  ]
+ },
+ {
+  "friendly": "Hedge Relationship",
+  "schema": "trd",
+  "entity": "hedge_relationship",
+  "columns": [
+   {
+    "COLUMN_NAME": "hedge_rel_id",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "designation_date",
+    "DATA_TYPE": "date",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "product_code",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "forecast_month",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "forecast_qty_mt",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 3
+   },
+   {
+    "COLUMN_NAME": "designated_lots",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "hedge_ratio",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 8,
+    "NUMERIC_SCALE": 4
+   },
+   {
+    "COLUMN_NAME": "documented",
+    "DATA_TYPE": "bit",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "hedge_type",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   }
+  ]
+ },
+ {
+  "friendly": "MTM Daily",
+  "schema": "eng",
+  "entity": "mtm_daily",
+  "columns": [
+   {
+    "COLUMN_NAME": "biz_date",
+    "DATA_TYPE": "date",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "kind",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "id",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "ref",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "product_code",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "cp_id",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "tenor_month",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "s",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "qty",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 3
+   },
+   {
+    "COLUMN_NAME": "tau",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "curve_price",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 4
+   },
+   {
+    "COLUMN_NAME": "contract_price",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "fx",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 6
+   },
+   {
+    "COLUMN_NAME": "mtm_myr",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "version_no",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "restated",
+    "DATA_TYPE": "bit",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   }
+  ]
+ },
+ {
+  "friendly": "Attribution Daily",
+  "schema": "eng",
+  "entity": "attribution_daily",
+  "columns": [
+   {
+    "COLUMN_NAME": "biz_date",
+    "DATA_TYPE": "date",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "mtm_open",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "mtm_close",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "d_mtm",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "b1",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "b2",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "b3",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "b4",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "b5",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "b6",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "sum_b",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "realised",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "restated",
+    "DATA_TYPE": "bit",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "run_ts",
+    "DATA_TYPE": "datetime2",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   }
+  ]
+ },
+ {
+  "friendly": "Exposure Daily",
+  "schema": "eng",
+  "entity": "exposure_daily",
+  "columns": [
+   {
+    "COLUMN_NAME": "biz_date",
+    "DATA_TYPE": "date",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "cp_id",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "mtm_net",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "ar_open",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "unbilled",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "delivery_risk",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "collateral",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "exposure",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "limit_myr",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 18,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "utilisation",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 4
+   },
+   {
+    "COLUMN_NAME": "band",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "ecl",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   }
+  ]
+ },
+ {
+  "friendly": "Hedge Test Monthly",
+  "schema": "eng",
+  "entity": "hedge_test_monthly",
+  "columns": [
+   {
+    "COLUMN_NAME": "month_key",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "hedge_rel_id",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "product_code",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "forecast_month",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "cum_dfv_item",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "cum_dfv_instr",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "dollar_offset",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 4
+   },
+   {
+    "COLUMN_NAME": "assessed",
+    "DATA_TYPE": "bit",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "prospective_slope",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 4
+   },
+   {
+    "COLUMN_NAME": "prospective_r2",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 4
+   },
+   {
+    "COLUMN_NAME": "effective",
+    "DATA_TYPE": "bit",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "ineffectiveness_pl",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "oci_open",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "oci_effective_added",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "oci_reclassified",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "oci_close",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   }
+  ]
+ },
+ {
+  "friendly": "Bucket",
+  "schema": "ref",
+  "entity": "bucket",
+  "columns": [
+   {
+    "COLUMN_NAME": "bucket_no",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "bucket_code",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "bucket_name",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "bucket_sort",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "bucket_note",
+    "DATA_TYPE": "varchar",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   }
+  ]
+ },
+ {
+  "friendly": "Attribution Bucket Daily",
+  "schema": "eng",
+  "entity": "attribution_bucket_daily",
+  "columns": [
+   {
+    "COLUMN_NAME": "biz_date",
+    "DATA_TYPE": "date",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "bucket_no",
+    "DATA_TYPE": "int",
+    "NUMERIC_PRECISION": 10,
+    "NUMERIC_SCALE": 0
+   },
+   {
+    "COLUMN_NAME": "amount",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 19,
+    "NUMERIC_SCALE": 2
+   },
+   {
+    "COLUMN_NAME": "restated",
+    "DATA_TYPE": "bit",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   }
+  ]
+ },
+ {
+  "friendly": "FX Rate",
+  "schema": "mkt",
+  "entity": "fx_rate",
+  "columns": [
+   {
+    "COLUMN_NAME": "rate_date",
+    "DATA_TYPE": "date",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "ccy_pair",
+    "DATA_TYPE": "char",
+    "NUMERIC_PRECISION": null,
+    "NUMERIC_SCALE": null
+   },
+   {
+    "COLUMN_NAME": "rate",
+    "DATA_TYPE": "decimal",
+    "NUMERIC_PRECISION": 12,
+    "NUMERIC_SCALE": 6
+   }
+  ]
+ }
+]

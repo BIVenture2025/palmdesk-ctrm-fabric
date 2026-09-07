@@ -1,0 +1,278 @@
+{
+  "seed": 20260906,
+  "start": "2026-03-16",
+  "end": "2026-08-28",
+  "n_days": 120,
+  "tables": {
+    "ref.calendar": {
+      "rows": 120,
+      "check_column": "day_index",
+      "check_sum": "7260"
+    },
+    "ref.product": {
+      "rows": 3,
+      "check_column": null,
+      "check_sum": null
+    },
+    "ref.counterparty": {
+      "rows": 40,
+      "check_column": "cp_id",
+      "check_sum": "820"
+    },
+    "ref.credit_limit": {
+      "rows": 40,
+      "check_column": "approved_limit_myr",
+      "check_sum": "826100000.00"
+    },
+    "ref.collateral": {
+      "rows": 10,
+      "check_column": "amount_myr",
+      "check_sum": "28130000.00"
+    },
+    "ref.ecl_rate": {
+      "rows": 16,
+      "check_column": "rate",
+      "check_sum": "2.3310"
+    },
+    "trd.physical_contract": {
+      "rows": 549,
+      "check_column": "confirmed_qty_mt",
+      "check_sum": "863500"
+    },
+    "trd.contract_version": {
+      "rows": 598,
+      "check_column": "quantity_mt",
+      "check_sum": "921000.000"
+    },
+    "trd.futures_trade": {
+      "rows": 278,
+      "check_column": "lots",
+      "check_sum": "3502"
+    },
+    "trd.hedge_relationship": {
+      "rows": 8,
+      "check_column": "designated_lots",
+      "check_sum": "1200"
+    },
+    "ops.actualisation": {
+      "rows": 456,
+      "check_column": "quantity_mt",
+      "check_sum": "604616.690"
+    },
+    "ops.invoice": {
+      "rows": 449,
+      "check_column": "amount_myr",
+      "check_sum": "2680292486.39"
+    },
+    "ops.payment": {
+      "rows": 119,
+      "check_column": "amount_myr",
+      "check_sum": "683014258.02"
+    },
+    "mkt.curve": {
+      "rows": 2888,
+      "check_column": "price",
+      "check_sum": "6459125.55"
+    },
+    "mkt.fx_rate": {
+      "rows": 240,
+      "check_column": "rate",
+      "check_sum": "537.803932"
+    },
+    "mkt.monthly_history": {
+      "rows": 96,
+      "check_column": "price",
+      "check_sum": "144714.478637"
+    }
+  },
+  "batches": [
+    {
+      "file": "001_ref_calendar_1.sql",
+      "table": "ref.calendar",
+      "rows": 120,
+      "bytes": 3691
+    },
+    {
+      "file": "002_ref_product_1.sql",
+      "table": "ref.product",
+      "rows": 3,
+      "bytes": 276
+    },
+    {
+      "file": "003_ref_counterparty_1.sql",
+      "table": "ref.counterparty",
+      "rows": 40,
+      "bytes": 2897
+    },
+    {
+      "file": "004_ref_credit_limit_1.sql",
+      "table": "ref.credit_limit",
+      "rows": 40,
+      "bytes": 806
+    },
+    {
+      "file": "005_ref_collateral_1.sql",
+      "table": "ref.collateral",
+      "rows": 10,
+      "bytes": 301
+    },
+    {
+      "file": "006_ref_ecl_rate_1.sql",
+      "table": "ref.ecl_rate",
+      "rows": 16,
+      "bytes": 415
+    },
+    {
+      "file": "007_trd_physical_contract_1.sql",
+      "table": "trd.physical_contract",
+      "rows": 291,
+      "bytes": 27956
+    },
+    {
+      "file": "008_trd_physical_contract_2.sql",
+      "table": "trd.physical_contract",
+      "rows": 258,
+      "bytes": 24862
+    },
+    {
+      "file": "009_trd_contract_version_1.sql",
+      "table": "trd.contract_version",
+      "rows": 564,
+      "bytes": 27988
+    },
+    {
+      "file": "010_trd_contract_version_2.sql",
+      "table": "trd.contract_version",
+      "rows": 34,
+      "bytes": 2131
+    },
+    {
+      "file": "011_trd_futures_trade_1.sql",
+      "table": "trd.futures_trade",
+      "rows": 278,
+      "bytes": 20325
+    },
+    {
+      "file": "012_trd_hedge_relationship_1.sql",
+      "table": "trd.hedge_relationship",
+      "rows": 8,
+      "bytes": 713
+    },
+    {
+      "file": "013_ops_actualisation_1.sql",
+      "table": "ops.actualisation",
+      "rows": 436,
+      "bytes": 27988
+    },
+    {
+      "file": "014_ops_actualisation_2.sql",
+      "table": "ops.actualisation",
+      "rows": 20,
+      "bytes": 1416
+    },
+    {
+      "file": "015_ops_invoice_1.sql",
+      "table": "ops.invoice",
+      "rows": 375,
+      "bytes": 27950
+    },
+    {
+      "file": "016_ops_invoice_2.sql",
+      "table": "ops.invoice",
+      "rows": 74,
+      "bytes": 5685
+    },
+    {
+      "file": "017_ops_payment_1.sql",
+      "table": "ops.payment",
+      "rows": 119,
+      "bytes": 4221
+    },
+    {
+      "file": "018_mkt_curve_1.sql",
+      "table": "mkt.curve",
+      "rows": 504,
+      "bytes": 27993
+    },
+    {
+      "file": "019_mkt_curve_2.sql",
+      "table": "mkt.curve",
+      "rows": 501,
+      "bytes": 27972
+    },
+    {
+      "file": "020_mkt_curve_3.sql",
+      "table": "mkt.curve",
+      "rows": 502,
+      "bytes": 27988
+    },
+    {
+      "file": "021_mkt_curve_4.sql",
+      "table": "mkt.curve",
+      "rows": 502,
+      "bytes": 27980
+    },
+    {
+      "file": "022_mkt_curve_5.sql",
+      "table": "mkt.curve",
+      "rows": 501,
+      "bytes": 27988
+    },
+    {
+      "file": "023_mkt_curve_6.sql",
+      "table": "mkt.curve",
+      "rows": 378,
+      "bytes": 21120
+    },
+    {
+      "file": "024_mkt_fx_rate_1.sql",
+      "table": "mkt.fx_rate",
+      "rows": 240,
+      "bytes": 8459
+    },
+    {
+      "file": "025_mkt_monthly_history_1.sql",
+      "table": "mkt.monthly_history",
+      "rows": 96,
+      "bytes": 3360
+    }
+  ],
+  "injected": {
+    "mispriced_contract_refs": [
+      "PC00102",
+      "PC00270",
+      "PC00430"
+    ],
+    "cp_mtm_breach": 3,
+    "cp_ageing_breach": 18,
+    "cp_b_contract_ids": [
+      10,
+      28,
+      297,
+      300,
+      329,
+      330,
+      346,
+      380,
+      386,
+      393,
+      417,
+      421,
+      462,
+      465,
+      471,
+      546,
+      547,
+      548,
+      549
+    ],
+    "failing_hedge_rel_id": 5,
+    "restated_curve_date": "2026-05-15",
+    "restated_published": "2026-05-20",
+    "withdrawn_quote": [
+      "PKO",
+      "2026-04-24",
+      "2026-11"
+    ]
+  }
+}

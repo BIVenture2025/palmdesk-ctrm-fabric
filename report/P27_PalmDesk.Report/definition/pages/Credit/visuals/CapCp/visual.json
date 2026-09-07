@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "CapCp",
+  "position": {
+    "x": 20,
+    "y": 516,
+    "z": 0,
+    "height": 48,
+    "width": 736,
+    "tabOrder": 100
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Exposure is MTM plus open receivables plus unbilled plus delivery risk, net of collateral, against an approved limit. Engineered: CP 3 (Perusahaan Minyak Sawit Tanjung) breaches from 2026-06-23 on pure MTM, CP 18 (Kandla Vanaspati) from 2026-07-17 on unpaid invoices. ORGANIC, not engineered: CP 25 (06-04), CP 26 (06-08), CP 35 (06-19), CP 40 (07-13). A book where only the engineered names ever breach would not be credible.",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "color": "#5A6B72"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Left"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

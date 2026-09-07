@@ -1,0 +1,52 @@
+table 'Attribution Bucket Daily'
+	lineageTag: 740ed39c-4899-512c-a581-050db943db50
+	sourceLineageTag: attribution_bucket_daily
+
+	/// The attribution amount for the bucket(s) in context. Sliced by Bucket, the six values sum to Delta MTM.
+	measure 'Bucket Amount (MYR)' = SUM ( 'Attribution Bucket Daily'[amount] )
+		formatString: #,##0
+		lineageTag: f9773bc5-83ac-5e80-8aa4-8f962dbd55b3
+
+	measure 'Bridge alt text' = "Waterfall of the six attribution buckets, totalling " & FORMAT ( [Bucket Amount (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: 1befc5fa-cc1c-532e-98a7-7e24ea99b8b2
+
+	column biz_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 48d098ae-9d7a-569a-9439-6befd35ef848
+		sourceLineageTag: biz_date
+		summarizeBy: none
+		sourceColumn: biz_date
+		annotation SummarizationSetBy = Automatic
+
+	column bucket_no
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: 276bf48f-cf1f-579c-88b7-eafb34882e57
+		sourceLineageTag: bucket_no
+		summarizeBy: none
+		sourceColumn: bucket_no
+
+	column amount
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: dc4f402e-3974-537d-99c5-54a976776294
+		sourceLineageTag: amount
+		summarizeBy: sum
+		sourceColumn: amount
+
+	column restated
+		dataType: boolean
+		lineageTag: 65184352-83de-54de-ae8b-94a6853443e4
+		sourceLineageTag: restated
+		summarizeBy: none
+		sourceColumn: restated
+
+	partition 'Attribution Bucket Daily' = entity
+		mode: directLake
+		source
+			entityName: attribution_bucket_daily
+			schemaName: eng
+			expressionSource: 'DirectLake - WH_PalmDesk'

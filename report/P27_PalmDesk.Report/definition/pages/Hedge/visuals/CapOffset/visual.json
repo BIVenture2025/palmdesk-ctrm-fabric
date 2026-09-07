@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "CapOffset",
+  "position": {
+    "x": 772,
+    "y": 516,
+    "z": 0,
+    "height": 48,
+    "width": 474,
+    "tabOrder": 100
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Dollar offset by month. Relationship 5 carries MYR -1,740,000 of ineffectiveness to profit or loss in 2026-06; it passes April (-0.8273) and May (-0.9066). Prospective slope -1.0132, R-squared 0.8555.",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "color": "#5A6B72"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Left"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "Sub",
+  "position": {
+    "x": 20,
+    "y": 94,
+    "z": 0,
+    "height": 30,
+    "width": 1226,
+    "tabOrder": 5500
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "The book closed 2026-08-28 at MYR -168,330 mark-to-market on 449 open positions: a physical long offset by a larger FCPO short. Net tonnage is short 84,270 MT.",
+                    "textStyle": {
+                      "fontSize": "10pt",
+                      "color": "#5A6B72"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Left"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

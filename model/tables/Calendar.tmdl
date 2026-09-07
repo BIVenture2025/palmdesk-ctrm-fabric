@@ -1,0 +1,51 @@
+table 'Calendar'
+	lineageTag: 172f1642-414a-515f-8385-9c2e148805cd
+	sourceLineageTag: calendar
+
+	/// Last business day in the current filter context. The book is valued to this date.
+	measure 'Latest Business Date' = MAX ( 'Calendar'[biz_date] )
+		lineageTag: f3e3d64d-38a5-54de-8182-2d252ffe6d48
+
+	/// Business days in context. The calendar is Mon-Fri only; no public-holiday table exists (declared in the contract).
+	measure 'Business Days' = COUNTROWS ( 'Calendar' )
+		formatString: 0
+		lineageTag: b1df9aa1-7cc5-512c-b7a6-2b99338d5f2c
+
+	column biz_date
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 6ae7c719-942c-5187-83ac-b80ecfb457b3
+		sourceLineageTag: biz_date
+		summarizeBy: none
+		sourceColumn: biz_date
+		annotation SummarizationSetBy = Automatic
+
+	column day_index
+		dataType: int64
+		formatString: 0
+		isHidden
+		lineageTag: c88a4e67-8546-5847-8569-13756771d482
+		sourceLineageTag: day_index
+		summarizeBy: none
+		sourceColumn: day_index
+
+	column month_key
+		dataType: string
+		lineageTag: 9faeb483-fc1e-50be-8e62-573feb40a01f
+		sourceLineageTag: month_key
+		summarizeBy: none
+		sourceColumn: month_key
+
+	column is_month_end
+		dataType: boolean
+		lineageTag: 8ab36600-3b22-5e5d-ae43-6f28f4d8a71d
+		sourceLineageTag: is_month_end
+		summarizeBy: none
+		sourceColumn: is_month_end
+
+	partition 'Calendar' = entity
+		mode: directLake
+		source
+			entityName: calendar
+			schemaName: ref
+			expressionSource: 'DirectLake - WH_PalmDesk'

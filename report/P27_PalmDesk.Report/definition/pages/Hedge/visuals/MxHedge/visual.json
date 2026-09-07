@@ -1,0 +1,126 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "MxHedge",
+  "position": {
+    "x": 20,
+    "y": 244,
+    "z": 0,
+    "height": 268,
+    "width": 736,
+    "tabOrder": 7000
+  },
+  "visual": {
+    "visualType": "matrix",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hedge Test Monthly"
+                    }
+                  },
+                  "Property": "month_key"
+                }
+              },
+              "queryRef": "Hedge Test Monthly.month_key",
+              "nativeQueryRef": "month_key",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hedge Test Monthly"
+                    }
+                  },
+                  "Property": "hedge_rel_id"
+                }
+              },
+              "queryRef": "Hedge Test Monthly.hedge_rel_id",
+              "nativeQueryRef": "hedge_rel_id",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hedge Test Monthly"
+                    }
+                  },
+                  "Property": "Dollar Offset"
+                }
+              },
+              "queryRef": "Hedge Test Monthly.Dollar Offset",
+              "nativeQueryRef": "Dollar Offset",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hedge Test Monthly"
+                    }
+                  },
+                  "Property": "Prospective R2"
+                }
+              },
+              "queryRef": "Hedge Test Monthly.Prospective R2",
+              "nativeQueryRef": "Prospective R2",
+              "active": true
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hedge Test Monthly"
+                    }
+                  },
+                  "Property": "Ineffectiveness to P&L (MYR)"
+                }
+              },
+              "queryRef": "Hedge Test Monthly.Ineffectiveness to P&L (MYR)",
+              "nativeQueryRef": "Ineffectiveness to P&L (MYR)",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Hedge Test Monthly"
+                    }
+                  },
+                  "Property": "Hedge table alt text"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

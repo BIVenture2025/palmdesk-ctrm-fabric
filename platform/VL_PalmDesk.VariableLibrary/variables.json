@@ -1,0 +1,152 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/variableLibrary/definition/variables/1.0.0/schema.json",
+  "variables": [
+    {
+      "name": "workspace_name",
+      "type": "String",
+      "value": "WS_PalmDesk_Dev",
+      "note": "Fabric workspace holding the P27 estate. Prod value set overrides."
+    },
+    {
+      "name": "warehouse_name",
+      "type": "String",
+      "value": "WH_PalmDesk",
+      "note": "CTRM operational store + T-SQL engines (Gate 1 PASS 2026-09-06)."
+    },
+    {
+      "name": "mirrored_db_name",
+      "type": "String",
+      "value": "OMD_PalmDesk_Market",
+      "note": "Open mirrored database (GenericMirror) for the vendor market feed."
+    },
+    {
+      "name": "capacity_id",
+      "type": "String",
+      "value": "14e682a7-70e3-4636-a78c-76aaa2e11be1",
+      "note": "Trial FTL64, Malaysia West. Env-specific."
+    },
+    {
+      "name": "generator_seed",
+      "type": "Integer",
+      "value": 20260906,
+      "note": "Fixed seed. Changing this invalidates every frozen control total."
+    },
+    {
+      "name": "window_business_days",
+      "type": "Integer",
+      "value": 120,
+      "note": "Business days generated and run by usp_run_eod."
+    },
+    {
+      "name": "window_start_date",
+      "type": "String",
+      "value": "2026-03-16",
+      "note": "First business day (Mon). Mon-Fri calendar, no public-holiday table (declared simplification)."
+    },
+    {
+      "name": "lot_size_mt",
+      "type": "Integer",
+      "value": 25,
+      "note": "FCPO contract size - VERIFIED Bursa 2026-09-06."
+    },
+    {
+      "name": "tick_myr_per_mt",
+      "type": "Number",
+      "value": 1.0,
+      "note": "FCPO minimum price fluctuation - VERIFIED Bursa 2026-09-06."
+    },
+    {
+      "name": "daily_limit_pct",
+      "type": "Number",
+      "value": 0.1,
+      "note": "FCPO 10% daily limit - VERIFIED Bursa; generator caps settlement moves here."
+    },
+    {
+      "name": "book_ccy",
+      "type": "String",
+      "value": "MYR"
+    },
+    {
+      "name": "exposure_amber_pct",
+      "type": "Number",
+      "value": 0.75,
+      "note": "Utilisation band: amber from 75%."
+    },
+    {
+      "name": "exposure_red_pct",
+      "type": "Number",
+      "value": 0.9,
+      "note": "Utilisation band: red from 90%; breach above 100%."
+    },
+    {
+      "name": "delivery_risk_window_days",
+      "type": "Integer",
+      "value": 30,
+      "note": "Open physical commitments delivering within this window count as delivery risk."
+    },
+    {
+      "name": "collateral_haircut_lc",
+      "type": "Number",
+      "value": 0.1,
+      "note": "LC haircut 10%; cash and bank guarantee 0%."
+    },
+    {
+      "name": "hedge_band_low",
+      "type": "Number",
+      "value": 0.8,
+      "note": "IFRS 9 dollar-offset / critical-terms band."
+    },
+    {
+      "name": "hedge_band_high",
+      "type": "Number",
+      "value": 1.25
+    },
+    {
+      "name": "hedge_regression_months",
+      "type": "Integer",
+      "value": 24,
+      "note": "Prospective regression window (synthetic monthly history)."
+    },
+    {
+      "name": "hedge_r2_min",
+      "type": "Number",
+      "value": 0.8
+    },
+    {
+      "name": "unexplained_tolerance_myr",
+      "type": "Number",
+      "value": 0.28,
+      "note": "FROZEN 2026-09-06 09:49 UTC from the clean replay: MAX(ABS(b6)) over 117 non-engineered days (eng.control_total UNEXPLAINED_TOLERANCE_MYR). Re-freeze if the generator seed or any source table changes."
+    },
+    {
+      "name": "enable_dirty_data",
+      "type": "Boolean",
+      "value": true,
+      "note": "Late actualisations out of sequence + one curve restatement. OFF leaves the restatement path untested."
+    },
+    {
+      "name": "warehouse_id",
+      "type": "String",
+      "value": "43516adb-2f22-46e6-8fa4-3ad499483171",
+      "note": "WH_PalmDesk item id. Second argument of Sql.Database in the Direct Lake on SQL expression."
+    },
+    {
+      "name": "warehouse_sql_endpoint",
+      "type": "String",
+      "value": "<SQL-ENDPOINT>.datawarehouse.fabric.microsoft.com",
+      "note": "WH_PalmDesk SQL analytics endpoint. Supplied by the user 2026-09-07; no session channel exposes it (SERVERPROPERTY('ServerName') returns only the workspace GUID). This is the value that unblocked the Direct Lake binding - F-29. Env-specific: a rebuilt Warehouse gets a new one."
+    },
+    {
+      "name": "semantic_model_id",
+      "type": "String",
+      "value": "f02c8481-f606-41b8-9026-b09ca1932258",
+      "note": "SM_PalmDesk. The report's byConnection string resolves this."
+    },
+    {
+      "name": "direct_lake_connector",
+      "type": "String",
+      "value": "Sql.Database",
+      "note": "PROVEN 2026-09-07 (F-29): a Fabric WAREHOUSE binds through Direct Lake on SQL. AzureStorage.DataLake (Direct Lake on OneLake) validates on create and never binds a table. Pick the connector from what the SOURCE is."
+    }
+  ]
+}

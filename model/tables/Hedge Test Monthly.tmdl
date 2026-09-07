@@ -1,0 +1,215 @@
+table 'Hedge Test Monthly'
+	lineageTag: 4e3fadb3-c1a3-5b70-9261-93e8b7b5844e
+	sourceLineageTag: hedge_test_monthly
+
+	/// Relationship-months actually assessed. A month whose cumulative hedged-item change is under 1% of notional is not assessed (the de minimis floor, contract section 6).
+	measure 'Assessments' = CALCULATE ( COUNTROWS ( 'Hedge Test Monthly' ), 'Hedge Test Monthly'[assessed] = TRUE () )
+		formatString: 0
+		lineageTag: 79ec0a0f-c812-57c6-b3ef-485d3a42c7c1
+
+	/// Assessed relationship-months that passed the dollar-offset test.
+	measure 'Assessments Effective' = CALCULATE ( COUNTROWS ( 'Hedge Test Monthly' ), 'Hedge Test Monthly'[assessed] = TRUE (), 'Hedge Test Monthly'[effective] = TRUE () )
+		formatString: 0
+		lineageTag: 198aabc0-8d6c-585f-8c17-7db7d08972d9
+
+	/// Assessed relationship-months that failed.
+	measure 'Assessments Failing' = [Assessments] - [Assessments Effective]
+		formatString: 0
+		lineageTag: 89069dc0-f631-5b9d-9a21-5399bfdaa827
+
+	/// Share of assessed relationship-months that passed.
+	measure 'Hedge Pass Rate' = DIVIDE ( [Assessments Effective], [Assessments] )
+		formatString: 0.0%
+		lineageTag: ce259b50-129f-56c9-aba2-2ff4f6f4e059
+
+	/// Cumulative change in the hedging instrument over the cumulative change in the hedged item. IAS 39 style band: -1.25 to -0.80.
+	measure 'Dollar Offset' = AVERAGE ( 'Hedge Test Monthly'[dollar_offset] )
+		formatString: 0.0000
+		lineageTag: ce9a5b40-2158-5d23-9fd8-e0abb250044d
+
+	/// Regression slope of the prospective effectiveness test.
+	measure 'Prospective Slope' = AVERAGE ( 'Hedge Test Monthly'[prospective_slope] )
+		formatString: 0.0000
+		lineageTag: 94e1ce04-4d40-5f50-95ec-abf5ae01646f
+
+	/// Regression R-squared of the prospective effectiveness test.
+	measure 'Prospective R2' = AVERAGE ( 'Hedge Test Monthly'[prospective_r2] )
+		formatString: 0.0000
+		lineageTag: 6e6f3b37-dc7d-5369-a105-04ec2790d7af
+
+	/// Ineffectiveness recognised in profit or loss.
+	measure 'Ineffectiveness to P&L (MYR)' = SUM ( 'Hedge Test Monthly'[ineffectiveness_pl] )
+		formatString: #,##0
+		lineageTag: fbbdde09-47b6-5902-8ef0-16b773d64b39
+
+	/// Cash flow hedge reserve carried in other comprehensive income at the close of the months in context.
+	measure 'OCI Closing (MYR)' = SUM ( 'Hedge Test Monthly'[oci_close] )
+		formatString: #,##0
+		lineageTag: da4526c3-39bf-5dae-a104-3e8a8ba3cf89
+
+	/// Amounts recycled out of OCI to profit or loss.
+	measure 'OCI Reclassified (MYR)' = SUM ( 'Hedge Test Monthly'[oci_reclassified] )
+		formatString: #,##0
+		lineageTag: 9422bda8-bef7-542a-b30b-1338ce45c2a0
+
+	measure 'Assessments alt text' = "Relationship-months assessed: " & FORMAT ( [Assessments], "0" ) & "."
+		isHidden
+		lineageTag: 9fd2bef8-996c-54f0-9aeb-14ce1098ac26
+
+	measure 'Assessments Effective alt text' = "Assessed months passing the dollar-offset test: " & FORMAT ( [Assessments Effective], "0" ) & "."
+		isHidden
+		lineageTag: 9dc8a380-4a42-5a8d-829b-6c940587d675
+
+	measure 'Assessments Failing alt text' = "Assessed relationship-months that failed: " & FORMAT ( [Assessments Failing], "0" ) & "."
+		isHidden
+		lineageTag: 422c3f15-326b-58ca-9bc7-d8f687542e20
+
+	measure 'Hedge Pass Rate alt text' = "Share of assessed relationship-months that passed: " & FORMAT ( [Hedge Pass Rate], "0.0%" ) & "."
+		isHidden
+		lineageTag: da06ac76-feb5-5f0b-a67c-508262b9249f
+
+	measure 'Ineffectiveness alt text' = "Ineffectiveness to profit or loss: " & FORMAT ( [Ineffectiveness to P&L (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: 999cab66-7b6e-56df-94e3-3bd0c6c4538f
+
+	measure 'OCI Closing alt text' = "Cash flow hedge reserve in OCI: " & FORMAT ( [OCI Closing (MYR)], "#,##0" ) & " MYR."
+		isHidden
+		lineageTag: 546fedde-f757-51c0-9af6-a9ce24944b39
+
+	measure 'Hedge table alt text' = "Dollar offset, prospective R squared and ineffectiveness by month and relationship. " & FORMAT ( [Assessments Effective], "0" ) & " of " & FORMAT ( [Assessments], "0" ) & " pass."
+		isHidden
+		lineageTag: caf4ff45-c4d3-52cc-a173-071a878e079b
+
+	measure 'Offset chart alt text' = "Average dollar-offset ratio by month. Window average " & FORMAT ( [Dollar Offset], "0.0000" ) & "."
+		isHidden
+		lineageTag: 98919059-7062-56a4-8d56-ffe3d7c1a1d2
+
+	column month_key
+		dataType: string
+		lineageTag: e983e889-5241-57e6-a54a-024ce38f374d
+		sourceLineageTag: month_key
+		summarizeBy: none
+		sourceColumn: month_key
+
+	column hedge_rel_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 306ed11d-9659-598d-a2ef-b45d6334c225
+		sourceLineageTag: hedge_rel_id
+		summarizeBy: none
+		sourceColumn: hedge_rel_id
+
+	column product_code
+		dataType: string
+		lineageTag: ee7d7800-10da-5096-af9f-7d2ba2ba22cf
+		sourceLineageTag: product_code
+		summarizeBy: none
+		sourceColumn: product_code
+
+	column forecast_month
+		dataType: string
+		lineageTag: a6addf0e-69a9-5dec-ac1c-2da01442ebd8
+		sourceLineageTag: forecast_month
+		summarizeBy: none
+		sourceColumn: forecast_month
+
+	column cum_dfv_item
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: db463b32-f05d-5257-b8df-c2fd338a1fb6
+		sourceLineageTag: cum_dfv_item
+		summarizeBy: sum
+		sourceColumn: cum_dfv_item
+
+	column cum_dfv_instr
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 652d16c2-5d0b-508f-92f5-a4f743ac481c
+		sourceLineageTag: cum_dfv_instr
+		summarizeBy: sum
+		sourceColumn: cum_dfv_instr
+
+	column dollar_offset
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: 3d4065a0-ee0c-599f-862a-35f482f6154e
+		sourceLineageTag: dollar_offset
+		summarizeBy: sum
+		sourceColumn: dollar_offset
+
+	column assessed
+		dataType: boolean
+		lineageTag: 2dd57f00-1a2e-510e-b19c-0f5f3dbb623e
+		sourceLineageTag: assessed
+		summarizeBy: none
+		sourceColumn: assessed
+
+	column prospective_slope
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: dfbfe4fa-bf41-557a-9513-5b2cf3228cf1
+		sourceLineageTag: prospective_slope
+		summarizeBy: sum
+		sourceColumn: prospective_slope
+
+	column prospective_r2
+		dataType: decimal
+		formatString: #,##0.0000
+		lineageTag: 2937dbe9-6487-50e5-91e6-0c1854570075
+		sourceLineageTag: prospective_r2
+		summarizeBy: sum
+		sourceColumn: prospective_r2
+
+	column effective
+		dataType: boolean
+		lineageTag: 5178e9d0-ec70-5743-a7bd-b55d97548aa9
+		sourceLineageTag: effective
+		summarizeBy: none
+		sourceColumn: effective
+
+	column ineffectiveness_pl
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: c0c1340a-9b85-525b-aa5c-590f56479868
+		sourceLineageTag: ineffectiveness_pl
+		summarizeBy: sum
+		sourceColumn: ineffectiveness_pl
+
+	column oci_open
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: f827717e-7fa3-5555-9ccf-6256c5b4b78b
+		sourceLineageTag: oci_open
+		summarizeBy: sum
+		sourceColumn: oci_open
+
+	column oci_effective_added
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: bed5ce65-17cb-59d4-a921-62439e9ada11
+		sourceLineageTag: oci_effective_added
+		summarizeBy: sum
+		sourceColumn: oci_effective_added
+
+	column oci_reclassified
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: e75e6ee3-c4b6-5350-bfa5-26a523cd7436
+		sourceLineageTag: oci_reclassified
+		summarizeBy: sum
+		sourceColumn: oci_reclassified
+
+	column oci_close
+		dataType: decimal
+		formatString: #,##0.00
+		lineageTag: 289c09f5-5208-508a-bfcf-a18ed8623c82
+		sourceLineageTag: oci_close
+		summarizeBy: sum
+		sourceColumn: oci_close
+
+	partition 'Hedge Test Monthly' = entity
+		mode: directLake
+		source
+			entityName: hedge_test_monthly
+			schemaName: eng
+			expressionSource: 'DirectLake - WH_PalmDesk'

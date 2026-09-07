@@ -1,0 +1,95 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "ByCountry",
+  "position": {
+    "x": 772,
+    "y": 244,
+    "z": 0,
+    "height": 268,
+    "width": 474,
+    "tabOrder": 7100
+  },
+  "visual": {
+    "visualType": "columnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Counterparty"
+                    }
+                  },
+                  "Property": "country"
+                }
+              },
+              "queryRef": "Counterparty.country",
+              "nativeQueryRef": "country",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Exposure Daily"
+                    }
+                  },
+                  "Property": "Exposure (MYR)"
+                }
+              },
+              "queryRef": "Exposure Daily.Exposure (MYR)",
+              "nativeQueryRef": "Exposure (MYR)",
+              "active": true
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Exposure Daily"
+                  }
+                },
+                "Property": "Exposure (MYR)"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "general": [
+        {
+          "properties": {
+            "altText": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Exposure Daily"
+                    }
+                  },
+                  "Property": "Country chart alt text"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

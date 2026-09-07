@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "CapBridge",
+  "position": {
+    "x": 20,
+    "y": 516,
+    "z": 0,
+    "height": 48,
+    "width": 736,
+    "tabOrder": 100
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "New trades enter at the confirmed price. Price is the curve move holding yesterday's tenor fixed; Time is one day of carry on today's curve; FX revalues the physical book only - futures are MYR and carry none. Amendments and cancellations releases the MTM of positions that left the book. Unexplained is the residual on unchanged positions.",
+                    "textStyle": {
+                      "fontSize": "8pt",
+                      "color": "#5A6B72"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "Left"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

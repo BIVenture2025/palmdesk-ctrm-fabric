@@ -1,0 +1,80 @@
+table 'Counterparty'
+	lineageTag: e09eb26a-c77f-5dc8-99e9-a50af94a36da
+	sourceLineageTag: counterparty
+
+	/// Counterparties in context.
+	measure 'Counterparties' = DISTINCTCOUNT ( 'Counterparty'[cp_id] )
+		formatString: 0
+		lineageTag: de8a28af-ff32-55f9-b0de-26ec8ae1d24c
+
+	column cp_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 50fba001-9ac2-5d2a-b1d4-a4c5abe75edf
+		sourceLineageTag: cp_id
+		summarizeBy: none
+		sourceColumn: cp_id
+
+	column cp_code
+		dataType: string
+		lineageTag: 938be8ac-47bb-5823-82ea-6294b1372441
+		sourceLineageTag: cp_code
+		summarizeBy: none
+		sourceColumn: cp_code
+
+	column cp_name
+		dataType: string
+		lineageTag: c52db166-50c5-522c-ab38-891e2af48ce2
+		sourceLineageTag: cp_name
+		summarizeBy: none
+		sourceColumn: cp_name
+
+	column country
+		dataType: string
+		lineageTag: 0edebca8-531a-596b-b670-96623d46104b
+		sourceLineageTag: country
+		summarizeBy: none
+		sourceColumn: country
+
+	column segment
+		dataType: string
+		lineageTag: 121950c5-fba1-5adc-b661-c9f55e5ef2bd
+		sourceLineageTag: segment
+		summarizeBy: none
+		sourceColumn: segment
+
+	column grade
+		dataType: string
+		lineageTag: d60b6cf1-15c7-594b-89c5-293ef0ad1e6f
+		sourceLineageTag: grade
+		summarizeBy: none
+		sourceColumn: grade
+
+	column has_netting
+		dataType: boolean
+		lineageTag: 9f421938-a58c-5f5a-bac7-f609c22f515f
+		sourceLineageTag: has_netting
+		summarizeBy: none
+		sourceColumn: has_netting
+
+	column payment_terms_days
+		dataType: int64
+		formatString: 0
+		lineageTag: fbd46c62-0380-5510-b712-b3b8607f8616
+		sourceLineageTag: payment_terms_days
+		summarizeBy: none
+		sourceColumn: payment_terms_days
+
+	column we_deliver_first
+		dataType: boolean
+		lineageTag: 13193dcb-15ea-52c2-8e00-70ec3af80b89
+		sourceLineageTag: we_deliver_first
+		summarizeBy: none
+		sourceColumn: we_deliver_first
+
+	partition 'Counterparty' = entity
+		mode: directLake
+		source
+			entityName: counterparty
+			schemaName: ref
+			expressionSource: 'DirectLake - WH_PalmDesk'

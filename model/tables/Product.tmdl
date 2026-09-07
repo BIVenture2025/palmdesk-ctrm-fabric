@@ -1,0 +1,38 @@
+table 'Product'
+	lineageTag: ec1c1a90-bc17-5c89-bd19-d9b93cef9e08
+	sourceLineageTag: product
+
+	column product_code
+		dataType: string
+		lineageTag: 127dbac8-8478-534f-9ed5-f450c7f5a04b
+		sourceLineageTag: product_code
+		summarizeBy: none
+		sourceColumn: product_code
+
+	column product_name
+		dataType: string
+		lineageTag: 34b45676-6b38-56c7-a1d6-a13c95558907
+		sourceLineageTag: product_name
+		summarizeBy: none
+		sourceColumn: product_name
+
+	column curve_ccy
+		dataType: string
+		lineageTag: 14bd88ab-9af6-51cc-812b-88caf08744b5
+		sourceLineageTag: curve_ccy
+		summarizeBy: none
+		sourceColumn: curve_ccy
+
+	column unit
+		dataType: string
+		lineageTag: 230af6b9-f793-52c7-a046-5826d8644538
+		sourceLineageTag: unit
+		summarizeBy: none
+		sourceColumn: unit
+
+	partition 'Product' = entity
+		mode: directLake
+		source
+			entityName: product
+			schemaName: ref
+			expressionSource: 'DirectLake - WH_PalmDesk'
