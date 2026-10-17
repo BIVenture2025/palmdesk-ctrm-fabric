@@ -14,7 +14,7 @@ What was run, in order:
 
 | # | Action | Result |
 |---|---|---|
-| 1 | `create_item` SemanticModel `SM_PalmDesk`, 14 parts, Direct Lake over `WH_PalmDesk` (P24's `AzureStorage.DataLake` shape, GUID path, CRLF) | **Succeeded**, LRO `79700813-…`, 11.2 s → `f02c8481-f606-41b8-9026-b09ca1932258` |
+| 1 | `create_item` SemanticModel `SM_PalmDesk`, 14 parts, Direct Lake over `WH_PalmDesk` (P24's `AzureStorage.DataLake` shape, GUID path, CRLF) | **Succeeded**, LRO `79700813-…`, 11.2 s → `<SEMANTIC_MODEL_ID>` |
 | 2 | `update_item_definition`, 17 parts — 12 tables, 108 columns, 13 relationships, **50 measures** | **Succeeded**, LRO `c0ff4038-…`, 3.5 s |
 | 3 | `create_item` Report `RPT_PalmDesk_Check`, 11 parts, bound `byConnection` to the model | **Succeeded**, LRO `18281769-…`, 0.44 s |
 | 4 | Opened the report in Chrome | All four data visuals: *"Something's wrong with one or more fields… (MTM Daily) MTM (MYR)"* — **the S1 symptom, reproduced on a completely different model** |
@@ -147,7 +147,7 @@ rules and their thresholds are written into the contract at Rev 2 so S3 can fire
 
 ## F-23 — The local Power BI modeling MCP's `ConnectFabric` is unattended-hostile → CHANNELS
 
-`connection_operations {operation: ConnectFabric, workspaceName: WS_PalmDesk_Dev,
+`connection_operations {operation: ConnectFabric, workspaceName: <YOUR_WORKSPACE>,
 semanticModelName: SM_PalmDesk}` → **`Device 'ywsbi' did not respond within 60s`**, and a follow-up
 `ListConnections` returned **`Found 0 connections`**. The call is sitting on an interactive sign-in.
 CLAUDE.md already says "attended sessions only"; this measures what that means — it does not fail
@@ -166,7 +166,7 @@ confound anything — each differing from the failing baseline by **one** variab
 | Probe | The one variable | Create | Render |
 |---|---|---|---|
 | **A** | `definition.pbism` **5.0** + `compatibilityLevel` **1702** | ✅ Succeeded, 13.4 s → `00567b74-7db4-4852-b895-805d0e2dcc3c` | ❌ **`Missing_References`** (23:20:06 +08, correlation `722cb196-…`) |
-| **C** | OneLake path in **name form**, `/WS_PalmDesk_Dev/WH_PalmDesk.Warehouse`, instead of GUIDs | ❌ **Failed at create**, 10.5 s | n/a |
+| **C** | OneLake path in **name form**, `/<YOUR_WORKSPACE>/WH_PalmDesk.Warehouse`, instead of GUIDs | ❌ **Failed at create**, 10.5 s | n/a |
 
 **Probe C's error is new and it is useful:**
 `Dataset_Import_FailedToImportDataset` — *"Direct Lake mode requires a Direct Lake data source.

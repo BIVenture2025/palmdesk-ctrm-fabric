@@ -8,8 +8,8 @@ which both validators would pass.
 """
 import pbir as P
 
-MID = "f02c8481-f606-41b8-9026-b09ca1932258"
-WS  = "WS_PalmDesk_Dev"
+MID = "<SEMANTIC_MODEL_ID>"
+WS  = "<YOUR_WORKSPACE>"
 SM  = "SM_PalmDesk"
 
 def card(name, x, y, w, h, items, tab):

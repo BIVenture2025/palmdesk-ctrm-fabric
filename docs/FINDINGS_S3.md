@@ -357,7 +357,7 @@ Resolved altText now appears in the accessibility tree — `" Book mark-to-marke
 context: 4.4205."` — where an hour earlier the only match was the `CapTrend` caption textbox.
 
 **Inventory intact:** `list_items` unfiltered → **9 items**, `SM_PalmDesk` still
-`f02c8481-f606-41b8-9026-b09ca1932258`. **The byPath publish overwrote in place and created no
+`<SEMANTIC_MODEL_ID>`. **The byPath publish overwrote in place and created no
 duplicate dataset** — the risk flagged in the hand-off did not materialise.
 
 ## F-43 MITIGATED — publish without saving and the schema pin survives

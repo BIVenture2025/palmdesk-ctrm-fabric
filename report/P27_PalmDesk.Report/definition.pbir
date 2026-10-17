@@ -3,7 +3,7 @@
   "version": "4.0",
   "datasetReference": {
     "byConnection": {
-      "connectionString": "Data Source=powerbi://api.powerbi.com/v1.0/myorg/WS_PalmDesk_Dev;initial catalog=SM_PalmDesk;access mode=readonly;integrated security=ClaimsToken;semanticmodelid=f02c8481-f606-41b8-9026-b09ca1932258"
+      "connectionString": "Data Source=powerbi://api.powerbi.com/v1.0/myorg/<YOUR_WORKSPACE>;initial catalog=<SEMANTIC_MODEL_NAME>;access mode=readonly;integrated security=ClaimsToken;semanticmodelid=<SEMANTIC_MODEL_ID>"
     }
   }
 }

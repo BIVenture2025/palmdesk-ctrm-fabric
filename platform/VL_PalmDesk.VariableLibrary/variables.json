@@ -4,7 +4,7 @@
     {
       "name": "workspace_name",
       "type": "String",
-      "value": "WS_PalmDesk_Dev",
+      "value": "<YOUR_WORKSPACE>",
       "note": "Fabric workspace holding the P27 estate. Prod value set overrides."
     },
     {
@@ -139,7 +139,7 @@
     {
       "name": "semantic_model_id",
       "type": "String",
-      "value": "f02c8481-f606-41b8-9026-b09ca1932258",
+      "value": "<SEMANTIC_MODEL_ID>",
       "note": "SM_PalmDesk. The report's byConnection string resolves this."
     },
     {

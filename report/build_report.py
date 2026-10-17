@@ -31,8 +31,8 @@ def with_alt(vis, page):
         n += 1
     return n
 
-MID  = "f02c8481-f606-41b8-9026-b09ca1932258"
-WS   = "WS_PalmDesk_Dev"
+MID  = "<SEMANTIC_MODEL_ID>"
+WS   = "<YOUR_WORKSPACE>"
 SM   = "SM_PalmDesk"
 INK  = "#1B3A5C"
 MUTE = "#5A6B72"

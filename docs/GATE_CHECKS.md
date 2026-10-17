@@ -180,7 +180,7 @@ write-up with the commands in `FINDINGS_S1.md`.
 | 4 | **The built-in browser reads `bursamalaysia.com`, which both shells report as HTTP 000** — that is how the FCPO/FEPO rows became VERIFIED. It is **not** signed in to Fabric; Chrome is. Chrome for tenant UI, built-in browser for the open web | `Claude_Browser get_page_text` on both Bursa product pages |
 | 5 | **Data through this channel is paid twice in tokens** (file read + tool argument): one 27 KB `INSERT` ≈ 105 k subagent tokens. The 25-batch load ran in 4 subagents; the main context never held a batch | subagent usage reports |
 
-**Inventory at S1 close** (`list_items` on `WS_PalmDesk_Dev` `b06ab341-0860-4341-a6c9-5986d0d7f4b0`,
+**Inventory at S1 close** (`list_items` on `<YOUR_WORKSPACE>` `b06ab341-0860-4341-a6c9-5986d0d7f4b0`,
 10:00 UTC): **5 items** — `WH_PalmDesk` (Warehouse), `VL_PalmDesk` (VariableLibrary),
 `OMD_PalmDesk_Market` (MirroredDatabase) + its auto-provisioned `SQLEndpoint`,
 `NB_PalmDesk_MarketFeed` (Notebook). Contract §3 expects exactly these at end of Phase 1, plus the
@@ -198,7 +198,7 @@ are in `FINDINGS_S2.md` F-15; the summary and the commands are here because §4 
 
 | # | Command / action | Result |
 |---|---|---|
-| 1 | `mcp__Fabric_Core_MCP__create_item` — SemanticModel `SM_PalmDesk`, 14 parts, Direct Lake over `WH_PalmDesk`, same `AzureStorage.DataLake` shape as the S1 probe | **Succeeded** — LRO `79700813-2607-4d1b-ba9f-5c5fcda51c7a`, 11.2 s → item `f02c8481-f606-41b8-9026-b09ca1932258` |
+| 1 | `mcp__Fabric_Core_MCP__create_item` — SemanticModel `SM_PalmDesk`, 14 parts, Direct Lake over `WH_PalmDesk`, same `AzureStorage.DataLake` shape as the S1 probe | **Succeeded** — LRO `79700813-2607-4d1b-ba9f-5c5fcda51c7a`, 11.2 s → item `<SEMANTIC_MODEL_ID>` |
 | 2 | `update_item_definition` — 17 parts (12 tables, 108 columns, 13 relationships, 50 measures) | **Succeeded** — LRO `c0ff4038-bf5d-4f34-83fe-b247eccb2000`, 3.5 s |
 | 3 | `create_item` — Report `RPT_PalmDesk_Check`, 11 parts, `byConnection` to the model | **Succeeded** — LRO `18281769-e0be-4a5f-b016-3501de4f879f`, 0.44 s → `31d7a0d6-149f-4b7d-b82c-33df6034daba` |
 | 4 | Chrome: opened the report | All 4 data visuals error; the 2 textboxes render. **The S1 symptom reproduced on an independent model** |

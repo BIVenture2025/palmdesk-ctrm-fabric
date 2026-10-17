@@ -73,7 +73,7 @@ Portfolio piece. Public GitHub + Pages guide + portfolio card + deck, as P23–P
 | Session | Phase | **Status** |
 |---|---|---|
 | 0 (2026-09-06) | Candidates, research, Rev 0.2 | done |
-| **1 (2026-09-06)** | Phase 0 + 1 — gates, scaffold, sources, engines | **DONE:** banner re-read; Gate 1 PASS (12 controls); Gates 2/3/4/7 probed with three-way verdicts (7 killed); FCPO/FEPO verified; name adopted; `WS_PalmDesk_Dev` + VL + WH created; 16 tables loaded with counts = `COUNT(*)` and checksums (proven twice, after the futures and limit-rule reloads); OMD + notebook created, **replication not evidenced (kill route active)**; T-SQL engines built; 120 days + restatement run; replay reconciled to the cent (400 aggregate rows, 480 hedge fields); control totals frozen; **E1 exported** (79 files, 1,289,193 B; zip 303,062 B); contract Rev 1 |
+| **1 (2026-09-06)** | Phase 0 + 1 — gates, scaffold, sources, engines | **DONE:** banner re-read; Gate 1 PASS (12 controls); Gates 2/3/4/7 probed with three-way verdicts (7 killed); FCPO/FEPO verified; name adopted; `<YOUR_WORKSPACE>` + VL + WH created; 16 tables loaded with counts = `COUNT(*)` and checksums (proven twice, after the futures and limit-rule reloads); OMD + notebook created, **replication not evidenced (kill route active)**; T-SQL engines built; 120 days + restatement run; replay reconciled to the cent (400 aggregate rows, 480 hedge fields); control totals frozen; **E1 exported** (79 files, 1,289,193 B; zip 303,062 B); contract Rev 1 |
 | **2** | Phase 2 — model, report, alerts | Opens with the two S1 carry-overs: (a) prove an API-created Direct Lake model answers a query; (b) mirror replication (one click). Then TMDL model with calc groups + ~30 measures read back against rendered values, 4 pages, both validators, Activator; **E2 export** |
 | **3** (hard stop) | Phase 3 — Prod replay, closure, publish | Prod = Core MCP replay of `02_Platform/` + DW MCP replay of the scripts in README order; Skill 10 C1–C8; Skill 9; lessons dual-written; **E3 before 2026-09-26** |
 
@@ -104,7 +104,7 @@ P26 VeloTrack: 7 sessions, 4 manual user actions. P27 after S1: 1 session used, 
 |---|---|---|---|
 | 1 | Built-in browser not signed in to Fabric → the session did not enter a password; Chrome was already signed in and was used instead | nobody | 0 |
 | 2 | Usage limit reached mid-load (08:00 UTC reset); the user said "pause" then "resume" | user, one word | ~0 |
-| 3 | **Open:** run `NB_PalmDesk_MarketFeed` once (Fabric → WS_PalmDesk_Dev → notebook → Run all) — optional; S2 will retry by browser first | user, optional | 30 s |
+| 3 | **Open:** run `NB_PalmDesk_MarketFeed` once (Fabric → <YOUR_WORKSPACE> → notebook → Run all) — optional; S2 will retry by browser first | user, optional | 30 s |
 
 ## 11. Open items the user may still overrule (defaults apply otherwise)
 
